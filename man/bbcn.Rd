@@ -29,7 +29,7 @@
 
    \value{ Perspective plot of surface over the month-year plane. }
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \examples{
       data(AirPassengers)

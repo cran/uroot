@@ -30,7 +30,7 @@ seasonal stability and against the alternative that the analysed season is not r
 
    \value{CH test statistic.}
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \references{F. Canova and B.E. Hansen (1995), Are seasonal patterns constant over time? A test for seasonal stability. <em>Journal of Business and Economic Statistics</em>, <b>13</b>, 237-252.
 

@@ -27,7 +27,7 @@
       quarterly path plot if it is asked for.
    }
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \examples{
       ## Plot in a single graph the path of the four quarters and

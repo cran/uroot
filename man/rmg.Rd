@@ -21,7 +21,7 @@ it may choose a choose a value of <code>krmg</code> based on the number of obser
 
    \value{ Shows a plot of the range against the mean, correlation between the range and the mean.}
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \examples{
      data(AirPassengers)

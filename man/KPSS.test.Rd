@@ -29,7 +29,7 @@ or integer[12(T/100)<sup>1/4</sup>], as well as \code{l} =0.
    \value{Statistic for the level stationary null hypothesis, and statistic for the trend stationary null hypothesis.
    }
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \references{
       D. Kwiatkowski, P.C.B. Phillips, P. Schmidt and Y. Shin (1992), Testing the null hypothesis of stationarity against the alternative of a unit root: How sure are we that economic time series have a unit root? \emph{Journal of Econometrics}, \bold{54}, 159-178.

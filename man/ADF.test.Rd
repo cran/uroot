@@ -39,7 +39,7 @@ and Ljung-Box test, "biclb" is based on the BIC criterion and Ljung-Box test, "a
    \value{ADF test statistic, coefficient and t-statistics of the deterministic components, and number of available observations.
    }
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \references{D.A. Dickey and W.A. Fuller (1981), Likelihood ratio statistics for autoregressive time series with a unit root. \emph{Econometrica}, \bold{49}, 1057-1071.}
 

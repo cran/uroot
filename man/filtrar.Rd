@@ -26,7 +26,7 @@ A zero in the element "i" of the vector indicates that the frequency associated 
 
    \value{ A list containing: Data of the filtered series, coefficients and lags of the polynomial that configure the filter. }
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \examples{
       ## Filter seasonal frequencies.

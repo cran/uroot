@@ -31,7 +31,7 @@ is not considered and contains a 1 for the frequencies that must be analysed. Th
 
    \value{CH test statistic.}
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \references{F. Canova and B.E. Hansen (1995), Are seasonal patterns constant over time? A test for seasonal stability. \emph{Journal of Business and Economic Statistics}, \bold{13}, 237-252.
    }

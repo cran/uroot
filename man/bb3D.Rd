@@ -22,7 +22,7 @@
        \code{MR} is a matrix with the data of the series like the matrix provided by
 \link{quarterg} in quarterly series and \link{bbmp} in monthly series.
 
-       As the plot is showed a window is launched as well. Coordinates of the mouse inside this window represent angles defining the viewing direction. Clicking on it with the right button of the mouse the plot rotates.
+       When the plot is showed a window is launched as well. Coordinates of the mouse inside this window represent angles defining the viewing direction. Clicking on it with the right button of the mouse the plot rotates.
    }
 
    \seealso{
@@ -31,7 +31,7 @@
 
    \value{ Perspective plot of surface over the month-year plane. }
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \examples{
       data(AirPassengers)

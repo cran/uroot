@@ -1,0 +1,20 @@
+
+## Version 1.0
+
+  # First version available at CRAN. It includes ADF, KPSS, HEGY, and CH tests, as well as some
+      graphics. Several utilities, such as a graphical user interface, and tables in LaTeX format
+      are also implemented.
+
+## Version 1.1
+
+  # DESCRIPTION file has been corrected. uroot does NOT still include functions related to
+      structural or periodic models.
+  # A bug in seasonal box plot for quarterly series has been fixed. Parameter las=2 has been
+      also changed to las=1.
+  # A bug in HEGY and CH recursive testing has been fixed. The partition of the sample sometimes
+      looked for periods out of the sample, becoming the funtion trapped in a loop with no end.
+
+
+
+
+

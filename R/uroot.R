@@ -1136,18 +1136,20 @@ seasboxplot <- function(label, color)
 
   if(s==4){
     xnames <- c("Qrtr1", "Qrtr2", "Qrtr3", "Qrtr4")
-    MS     <- quarterg(.wvari$vai, .wvari$s, .wvari$t0, plot=FALSE)
+    MS     <- quarterg(.wvari$vari, .wvari$s, .wvari$t0, plot=FALSE)
           }
   if(s==12){
-    xnames <- c("January", "February", "March", "April", "May", "June", "July",
-               "August", "September", "October", "November", "December")
+    #xnames <- c("January", "February", "March", "April", "May", "June", "July",
+    #           "August", "September", "October", "November", "December")
+    xnames <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+                "Aug", "Sep", "Oct", "Nov", "Dec")
     MS     <- bbmp(.wvari$vari, .wvari$s, .wvari$t0, c(1:12), "Prot", FALSE)
            }
 
   if(color==TRUE){color1 <- "lightblue"; color2 <- "SeaGreen2"}
   if(color==FALSE){color1 <- "lightgray"; color2 <- "gray60"}
-  opar <- par(las=2) # cex.axis=0.7, cex.main=0.8,
-  summ.box <- boxplot(split(vari, cycle(vari)), names=xnames,col=color1)
+  opar <- par(las=1) # cex.axis=0.7, cex.main=0.8,
+  summ.box <- boxplot(split(vari, cycle(vari)), names=xnames, col=color1)
   #                   main="Gráfico de cajas estacional"
   boxplot(split(vari, cycle(vari)), names=xnames, notch=TRUE, add=TRUE, col=color2)
   par(opar)
@@ -5654,6 +5656,8 @@ RecursiveTesting <- function(testname)
   N    <- length(vari)
 
   Nsb <- (N-7*s)/s
+  ifelse(N - N-ysooys(c((t0[1]+7+(as.integer(Nsb)-1)), t0[2]), t0, N, s)[[1]][1] >= s,
+         Nsb <- Nsb, Nsb <- Nsb-1)
   tablaPMs <- matrix(nrow=as.integer(Nsb)+2, ncol=6)
   ifelse(t0[2] == 1, tNs2aux <- s, tNs2aux <- t0[2]-1)
 

@@ -43,7 +43,7 @@ and Ljung-Box test, "biclb" is based on the BIC criterion and Ljung-Box test, "a
    \value{HEGY t-statistics and F-statistics, coefficient and t-statistics of the deterministic components, number of available observations.
    }
 
-   \author{Javier López-de-Lacalle \email{jedlobej@bs.ehu.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
 
    \references{S. Hylleberg, R. Engle, C. Granger and B. Yoo (1990),
 Seasonal integration and cointegration. \emph{Journal of Econometrics}, \bold{44}, 215-238.
