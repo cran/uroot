@@ -1,0 +1,3 @@
+
+ export(ADF.test, bb3D, bbap, bbcn, bbmp, CH.test, CHseas.test, dataFranses, dataIKERBIDE,
+        dataINE, filtrar, HEGY.test, KPSS.test, quarterg, rmg, urootgui)

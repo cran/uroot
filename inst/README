@@ -1,0 +1,25 @@
+
+## REQUIREMENTS
+----------------
+
+The package includes a graphical user interface from which all functions can be executed. For this interface to be launched "BWidget" is needed. "BWidget" is an extension for the R package tcltk that consists of Tcl scripts.
+
+The "BWidget" is not included in the standard Tcl/TK package of R. You can download an updated version at "http://sourceforge.net/projects/tcllib/". BWidget 1.7.0 can be obtained extracting it from the "uroot/inst/BWidget" folder in uroot_1.0.tar.gz.
+
+## INSTALLING "BWidget"
+------------------------
+
+ # Unix operative system
+
+ Extract "BWidget" to the folder "usr/lib". Once "BWidget" is installed a TCL_LIBRARY environment variable must be set to the Tcl library path "usr/lib/tcl8.4", and to a non-empty string, e.g. "Yes", a MY_TCLTK environment variable. If after this there are still problems try loading BWidget from an R workspace: tclRequire("BWidget"), after changing the working directory to the folder "usr/lib".
+
+ # Windows operative system
+
+ Extract "BWidget" to the folder "C:\Program Files\Tcl\lib". Once "BWidget" is installed a TCL_LIBRARY environment variable must be set to the Tcl library path "C:\Tcl\lib\tcl8.4", and to a non-empty string, e.g. "Yes", a MY_TCLTK environment variable. If after this there are still problems try loading BWidget from an R workspace: tclRequire("BWidget"), after changing the working directory to the folder "C:\Program Files\Tcl\".
+
+
+## LAUNCHING THE INTERFACE
+---------------------------
+
+After installing and loading the package some functions for unit root tests and graphics will be available. An easy to use interface allows the user to run all these functions. Funtion "urootgui()" will launch the interface.
+

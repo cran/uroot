@@ -1,0 +1,13 @@
+ADF.test           Augmented Dickey-Fuller test
+bbcn               Buys-Ballot contour
+bbmp               Buys-Ballot monthly plot
+bb3D               Buys-Ballot 3D
+CH.test            Canova-Hansen test for stationarity
+CHseas.test        Canova-Hansen test for seasonal stability
+filtrar            Filter selected frequencies
+HEGY.test          Hylleberg-Engle-Granger-Yoo test
+KPSS.test          Kwiatkowski-Phillips-Schmidt-Shin test
+quarterg           Buys-Ballot quarterly plot
+rmg                Range mean plot
+
+
