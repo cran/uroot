@@ -3,9 +3,7 @@
   \title{Canova-Hansen test}
 
   \description{
-     Compute the Canova-Hansen test statistic for examining the null hypothesis
-of no unit roots at seasonal frequencies against the alternative of a unit
-root at either a single or a set of seasonal frequencies.
+     This function computes the Canova-Hansen statistic for testing the null hypothesis of stationary seasonal cycles against the alternative of a unit root at either a single or a set of seasonal frequencies.
    }
 
    \usage{
@@ -13,7 +11,7 @@ root at either a single or a set of seasonal frequencies.
    }
 
    \arguments{
-       \item{label}{a list object with information about the series. The list consist of the following elements. \code{vari}, a ts object with the data of the series, \code{s}, the periodicity of the series (4, 12 or 1 for quarterly, monthly or anual data), \code{t0}, a vector of two elements indicating the year and season of the first observation, \code{N}, number of observations.}
+       \item{label}{a list object with information about the series. The list consist of the following elements. \code{vari}, a ts object with the data of the series, \code{s}, the periodicity of the series (4, 12, or 1 for quarterly, monthly, or anual data), \code{t0}, a vector of two elements indicating the year and season of the first observation, \code{N}, number of observations.}
        \item{frec}{a vector indicating the frequencies to analyse.}
        \item{f0}{a 0-1 (No-Yes) vector of length one indicating wether a lag of the dependent variable is included or not in the auxiliar regression.}
        \item{DetTr}{a logical argument. If TRUE a linear trend is included in the auxiliar regression.}
@@ -21,8 +19,9 @@ root at either a single or a set of seasonal frequencies.
    }
 
    \Details{
-      Elements of \code{frec} contain a 0 if the season assigned to this element
-is not considered and contains a 1 for the frequencies that must be analysed. The position of each grequency in the vector is as follows: c(pi/2, pi) for quarterly series and c(pi/6, 5pi/6, pi/3, 2pi/3, pi/2, pi) for monthly series.
+      Elements of \code{frec} must be set equal to 0 if the season assigned to this element is not considered and equals to 1 for the frequencies to analyse. The position of each frequency in the vector is as follows: c(pi/2, pi) for quarterly series and c(pi/6, 5pi/6, pi/3, 2pi/3, pi/2, pi) for monthly series.
+
+      The lag truncation parameter for the covariance matrix is \eqn{round(s*(N/100)^{0.25})}, where \eqn{s} is the periodicity of the series and \eqn{N} the length of the series.
    }
 
    \seealso{
@@ -31,7 +30,7 @@ is not considered and contains a 1 for the frequencies that must be analysed. Th
 
    \value{CH test statistic.}
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
 
    \references{F. Canova and B.E. Hansen (1995), Are seasonal patterns constant over time? A test for seasonal stability. \emph{Journal of Business and Economic Statistics}, \bold{13}, 237-252.
    }

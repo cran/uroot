@@ -81,13 +81,3 @@ Table DA.9.2: Real per capita disposable income in Sweden
 Sample: 1963.1 - 1988.1
  Source: Assarsson (1991)
  Remark: measured in logs.
-
-Table DA.9.3: Real per capita non-durables consumption in Sweden
-Sample: 1964.1 - 1988.1
- Source: Table DA.9.1 and the linear Census X-11 filter given in table 4.1 in the book. The forecasts and backcasts are generated as described in Ooms (1994).
- Remark: measured in logs. Seasonally adjusted using linear Census X-11 method
-
-Table DA.9.4: Real per capita disposable income in Sweden
-Sample: 1964.1 - 1988.1
- Source: Table DA.9.2 and the linear Census X-11 filter given in table 4.1 in the book. The forecasts and backcasts are generated as described in Ooms (1994).
- Remark: measured in logs. Seasonally adjusted using linear Census X-11 method

@@ -19,23 +19,24 @@
    }
 
    \details{
-       \code{MR} is a matrix with the data of the series like the matrix provided by
+       \code{MR} is a matrix with the data of the series defined as the matrix provided by
 \link{quarterg} in quarterly series and \link{bbmp} in monthly series.
 
-       When the plot is showed a window is launched as well. Coordinates of the mouse inside this window represent angles defining the viewing direction. Clicking on it with the right button of the mouse the plot rotates.
+       When the graphic is showed a window is launched as well. Coordinates of the mouse inside this window represent angles defining the viewing direction. The graphic rotates clicking on it with the right button of the mouse.
    }
 
    \seealso{
-      \code{\link{persp}, \link{contour}, \link{image} and \link{bbcn}.}
+     \code{\link{bbcn}}, \code{\link{bbmp}}, \code{\link{contour}}, \code{\link{image}}, and \code{\link{persp}}, \code{\link{quarterg}}.
    }
 
-   \value{ Perspective plot of surface over the month-year plane. }
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \value{ Perspective graphic of the surface over the month-year plane. }
+
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
 
    \examples{
       data(AirPassengers)
-      MR <- bbmp (vari=AirPassengers, s=12, t0 = c(1949,1), mp = c(1:12), vers = "Prot", plot = FALSE)
+      MR <- bbmp (vari=AirPassengers, t0 = c(1949,1), mp = c(1:12), vers = "Prot", plot = FALSE)
       bb3D (MR, s=12, t0=c(1949,1), color = TRUE, x = 30, y = 30)
    }
    \keyword{hplot}

@@ -4,7 +4,7 @@
 
   \title{Franses(1996) data bank}
   \description{
-      This data set contains some macroeconomic time series of the Basque Country.
+      This data set contains the time series analyzed in Franses (1996).
    }
 
    \format{A .csv file.}

@@ -43,14 +43,9 @@ vfic <- function(y0fic, s0fic, yNfic, sNfic)
 
 contts <- function(lm, a)
 {
-  X <- model.matrix(lm)
-  XX <- solve(t(X)%*%X)
-  uhat <- as.matrix(lm$residuals)
-  dff <- df.residual(lm)
-  var.u <- t(uhat)%*%uhat/dff
-  var.coef <- var.u*XX[a,a]
-  se.coef <- sqrt(var.coef)
-  et <- lm$coef[a]/se.coef
+  var.coef <- vcov(lm)[a,a]
+  se.coef  <- sqrt(var.coef)
+  et       <- lm$coef[a]/se.coef
   list(se.coef=se.coef, t.stat=et)
 }
 
@@ -459,12 +454,12 @@ ADF.test <- function(label, compdet, selecP, Mvfic, VFEp, showcat)
     cdlabel <- na.omit(c(cd1, cd2, cd3, cd4, cd5))
     cdrdo   <- data.frame(Components=cdlabel, rdodet[,1:2])
       cat(c("\n ------ ADF test ------ \n"))
-      cat(c("Statistic for the null hipothesis of \n unit root: ", t.adf, "\n\n "))
+      cat(c("Statistic for the null hypothesis of \n unit root: ", t.adf, "\n\n "))
       cat("Deterministic components estimates: \n")
       print(cdrdo)
       if(compdet[3]==1)
       cat(c("Seasonal dummys F.test: ", rdodet[1,3], "\n"))
-      cat(c("\n Number of lags selected:\n", retardos, "\n\n"))
+      cat(c("\n Number of lags selected: ", retardos, "\n\n"))
       cat(c("Number of effective observations: ", (N-1-max(retardos)), "\n\n"))
 #   if(exists("done")) tclvalue(done) <<- 1  # For MakeADF.test (wait before removing Mvfic, VFEp)
   }
@@ -477,8 +472,9 @@ ADF.test <- function(label, compdet, selecP, Mvfic, VFEp, showcat)
 
 # BUYS & BALLOT QUARTERLY PLOT
 
-quarterg <- function(vari, s, t0, plot)
+quarterg <- function(vari, t0, plot)
 {
+ s <- 4
  N    <- length(vari)
  colour=c("SlateBlue","SeaGreen","red","magenta")
  leyenda <- c("Qrtr1","Qrtr2","Qrtr3","Qrtr4")
@@ -536,8 +532,9 @@ quarterg <- function(vari, s, t0, plot)
 }
 
 # BUYS-BALLOT MONTH PLOT
-bbmp <- function(vari, s, t0, mp, vers, plot)
+bbmp <- function(vari, t0, mp, vers, plot)
 {
+ s <- 12
  N <- length(vari)
 
  #naux <- length(vari)/12
@@ -814,7 +811,7 @@ CH.test <- function(label, frec, f0, DetTr, showcat)
 
 # Omega supra-f estimada  (Omfhat)
 
-ltrunc <- round(4*(N/100)^0.25)
+ltrunc <- round(s*(N/100)^0.25)
 Omfhat <- Omegaf(N, s, ehat, Fhataux)
 
 # Matriz A
@@ -865,9 +862,9 @@ CHseas.test <- function(label, lmax, seas, showcat)
   N    <- length(vari)
 
   if(s==4)
-    Mper <- quarterg(vari, s, t0, plot=FALSE)
+    Mper <- quarterg(vari, t0, plot=FALSE)
   if(s==12)
-    Mper <- bbmp(vari, s, t0, c(1:12), "R", plot=FALSE)
+    Mper <- bbmp(vari, t0, c(1:12), "R", plot=FALSE)
 
   if(length(seas)==1)
   {
@@ -880,9 +877,9 @@ CHseas.test <- function(label, lmax, seas, showcat)
    if(showcat==TRUE){
       lret <- matrix(c(0:lmax), ncol=1)
       cat("\n ------ CH test ------ \n\n")
-      cat(" Statistics for the null hipothesis of \n level stationarity: \n")
+      cat(" Statistics for the null hypothesis of \n level stationarity: \n")
       print(data.frame(Lags=lret, Statistic=rdoCH[,1]))
-      cat("\n Statistics for the null hipothesis of \n trend stationarity:\n ")
+      cat("\n Statistics for the null hypothesis of \n trend stationarity:\n ")
       print(data.frame(Lags=lret, Statistic=rdoCH[,2]))
                     }
       list(data.frame(Lags=lret, Season=rdoCH[,2]))
@@ -909,7 +906,7 @@ CHseas.test <- function(label, lmax, seas, showcat)
    # Resumen de resultados
    if(showcat==TRUE){
      lret <- matrix(c(0:lmax), ncol=1)
-     cit1 <- "Statistics for the null hipothesis of \n level stationarity:\n"
+     cit1 <- "Statistics for the null hypothesis of \n level stationarity:\n"
      if(s==4)
        cit2 <- data.frame(Lags=lret, Qrtr1=rdoCH[,1],
                Qrtr2=rdoCH[,2], Qrtr3=rdoCH[,3], Qrtr4==rdoCH[,4])
@@ -919,7 +916,7 @@ CHseas.test <- function(label, lmax, seas, showcat)
          May=rdoCH[,5], June=rdoCH[,6], July=rdoCH[,7], August=rdoCH[,8],
          September=rdoCH[,9], October=rdoCH[,10], November=rdoCH[,11], December=rdoCH[,12])
 
-     cit3 <- "\n Statistics for the null hipothesis of \n trend stationarity:\n"
+     cit3 <- "\n Statistics for the null hypothesis of \n trend stationarity:\n"
      if(s==4)
        cit4 <- data.frame(Lags=lret, Qrt1=rdoCH[,5],
                Qrt2=rdoCH[,6], Qrt3=rdoCH[,7], Qrt4==rdoCH[,8])
@@ -1136,20 +1133,18 @@ seasboxplot <- function(label, color)
 
   if(s==4){
     xnames <- c("Qrtr1", "Qrtr2", "Qrtr3", "Qrtr4")
-    MS     <- quarterg(.wvari$vari, .wvari$s, .wvari$t0, plot=FALSE)
+    MS     <- quarterg(.wvari$vari, .wvari$t0, plot=FALSE)
           }
   if(s==12){
-    #xnames <- c("January", "February", "March", "April", "May", "June", "July",
-    #           "August", "September", "October", "November", "December")
-    xnames <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-                "Aug", "Sep", "Oct", "Nov", "Dec")
-    MS     <- bbmp(.wvari$vari, .wvari$s, .wvari$t0, c(1:12), "Prot", FALSE)
+    xnames <- c("January", "February", "March", "April", "May", "June", "July",
+               "August", "September", "October", "November", "December")
+    MS     <- bbmp(.wvari$vari, .wvari$t0, c(1:12), "Prot", FALSE)
            }
 
   if(color==TRUE){color1 <- "lightblue"; color2 <- "SeaGreen2"}
   if(color==FALSE){color1 <- "lightgray"; color2 <- "gray60"}
-  opar <- par(las=1) # cex.axis=0.7, cex.main=0.8,
-  summ.box <- boxplot(split(vari, cycle(vari)), names=xnames, col=color1)
+  opar <- par(las=2) # cex.axis=0.7, cex.main=0.8,
+  summ.box <- boxplot(split(vari, cycle(vari)), names=xnames,col=color1)
   #                   main="Gráfico de cajas estacional"
   boxplot(split(vari, cycle(vari)), names=xnames, notch=TRUE, add=TRUE, col=color2)
   par(opar)
@@ -1351,7 +1346,7 @@ HEGY.test <- function(label, compdet, selecP, Mvfic, VFEp, showcat)
     print(cdrdo)
     if(compdet[3]==1)
       cat(c("Seasonal dummys F.test: ", rdodet[1,3], "\n"))
-    cat(c("\n Number of lags selected:\n", retardos, "\n\n"))
+    cat(c("\n Number of lags selected: ", retardos, "\n\n"))
     cat(c(" Number of effective observations: ", (N-s-max(retardos)), "\n\n"))
                   }
   list(rdofrec, compdeter=rdodet, Lags=retardos, nobs=(N-s-max(retardos)))
@@ -1406,8 +1401,8 @@ KPSS.test <- function(vari, l, showcat)
  #
  if(showcat==TRUE){
      cat("\n------ KPSS test ------ \n\n")
-     cat(c(" Statistic for the null hipothesis of \n level stationarity:", Level," \n\n "))
-     cat(c("Statistic for the null hipothesis of \n trend stationarity:", Trend," \n\n "))
+     cat(c(" Statistic for the null hypothesis of \n level stationarity:", Level," \n\n "))
+     cat(c("Statistic for the null hypothesis of \n trend stationarity:", Trend," \n\n "))
                   }
  rdok <- data.frame(Level=Level, Trend=Trend)
  rdok
@@ -1419,7 +1414,8 @@ KPSS.test <- function(vari, l, showcat)
 
 Omegaf <- function(N, s, ehat, Fhataux)
 {
- m   <- round(4*(N/100)^0.25)
+ #m   <- round(4*(N/100)^0.25)
+ m   <- round(12*(N/100)^0.25)
  wnw <- c(1:(m+1))
  j   <- 1
  for(k in -m:m)
@@ -1455,7 +1451,7 @@ Omegaf <- function(N, s, ehat, Fhataux)
 # Considero k como el número de parámetros:
   # número de retardos más el término constante
 
-AICBIC <- function(lmabic)       
+AICBIC <- function(lmabic)
 {
    N <- nrow(model.matrix(lmabic))
    k <- ncol(model.matrix(lmabic))
@@ -1470,11 +1466,14 @@ AICBIC <- function(lmabic)
 AICBICaux <- function(vari, s, lmdet)
 {
   N    <- length(vari)
-  bp   <- round(10*log10(N))
-  abic <- matrix(ncol=2, nrow=bp+1)
-  ML   <- ret(vari, bp+1)
   k1   <- ncol(model.matrix(lmdet))
   ndet <- ncol(model.matrix(lmdet))
+  #bp   <- round(10*log10(N))
+  #bp   <- round(12*(N/100)^0.25)
+  #bp   <- round(10*log10(N)^(1/ndet))         ### Criterio personal
+  bp   <- round(12*(N/100)^0.5)        ### Criterio personal
+  ML   <- ret(vari, bp+1)
+  abic <- matrix(ncol=2, nrow=bp+1)
   miss <- s-length(which(vari[1:s]!="NaN"))+1
 
   lmabic    <- lm(ML[miss:N,1] ~ 0+model.matrix(lmdet)[,1:ndet])
@@ -1515,9 +1514,12 @@ selecPv2 <- function(vari, s, lmdet)
 {
    # N  <- length(na.omit(vari))
    N    <- length(vari)
-   bp   <- round(10*log10(N))
-   ML   <- ret(vari, bp + 1)
    ndet <- ncol(model.matrix(lmdet))
+   #bp   <- round(10*log10(N))
+   #bp   <- round(12*(N/100)^0.25)
+   #bp   <- round(10*log10(N)^(1/ndet))         ### Criterio personal
+   bp   <- round(12*(N/100)^0.5)        ### Criterio personal
+   ML   <- ret(vari, bp + 1)
    miss <- s - length(which(vari[1:s] != "NaN")) + 1
 
    aic    <- rep(NA, 2)
@@ -1562,9 +1564,12 @@ selecPv2 <- function(vari, s, lmdet)
  {
    N <- length(vari)
    # N  <- length(na.omit(vari))
-   bp   <- round(10*log10(N))
-   ML   <- ret(vari, bp + 1)
    ndet <- ncol(model.matrix(lmdet))
+   #bp   <- round(10*log10(N))
+   #bp   <- round(12*(N/100)^0.25)
+   #bp   <- round(10*log10(N)^(1/ndet))         ### Criterio personal
+   bp   <- round(12*(N/100)^0.5)        ### Criterio personal
+   ML   <- ret(vari, bp + 1)
    miss <- s-length(which(vari[1:s]!="NaN"))+1
 
    bic    <- c(1:2)
@@ -1610,10 +1615,13 @@ selecPv4 <- function(vari, s, lmdet)
 {
    N <- length(vari)
    # N    <- length(na.omit(vari))
-   bp   <- round(10*log10(N))
+   #bp   <- round(10*log10(N))
+   #bp   <- round(12*(N/100)^0.25)
+   ndet <- ncol(model.matrix(lmdet))
+   #bp   <- round(10*log10(N)^(1/ndet))         ### Criterio personal
+   bp   <- round(12*(N/100)^0.5)        ### Criterio personal
    ML   <- ret(vari, bp + 1)
    rsug <- rep(NA, bp)
-   ndet <- ncol(model.matrix(lmdet))
    miss <- s-length(which(vari[1:s]!="NaN"))+1
 
    rsug <- c(2:(bp+1))
@@ -1676,8 +1684,6 @@ selecPv5 <- function(vari, s, lmdet)
                    }
   Pmax
 }
-
-#
 
 # Elige el numero de retardos Pmax en función del
   # criterio BIC y Ljung-Box
@@ -1878,6 +1884,83 @@ Transfdet <- function(vari, s)
    #tkmessageBox(message="Original series has changed.", icon="info")
 #}
 
+MakeFiltra <- function()
+{
+  tt <- tktoplevel()
+  tkgrid(tklabel(tt, text="Select the frequencies you wish to filter:", fg="blue"))
+
+  string <- tclvalue(tkcmd(.treeWidget, "selection", "get"))
+  .wvari <<- ExeString(c(string, ""))
+
+  cero <- tkcheckbutton(tt)
+  pi   <- tkcheckbutton(tt)
+  pi2  <- tkcheckbutton(tt)
+  if(.wvari$s==12){
+    pi23 <- tkcheckbutton(tt)
+    pi3  <- tkcheckbutton(tt)
+    pi56 <- tkcheckbutton(tt)
+    pi6  <- tkcheckbutton(tt)
+           }
+  ceroValue <- tclVar("0")
+  piValue   <- tclVar("0")
+  pi2Value  <- tclVar("0")
+  if(.wvari$s==12){
+    pi23Value <- tclVar("0")
+    pi3Value  <- tclVar("0")
+    pi56Value <- tclVar("0")
+    pi6Value  <- tclVar("0")
+           }
+  tkconfigure(cero, variable=ceroValue)
+  tkgrid(tklabel(tt, text="cero"), cero)
+  tkconfigure(pi, variable=piValue)
+  tkgrid(tklabel(tt, text="pi"), pi)
+  tkconfigure(pi2, variable=pi2Value)
+  tkgrid(tklabel(tt, text="pi/2"), pi2)
+  if(.wvari$s==12){
+    tkconfigure(pi23, variable=pi23Value)
+    tkgrid(tklabel(tt, text="2pi/3"), pi23)
+    tkconfigure(pi3, variable=pi3Value)
+    tkgrid(tklabel(tt, text="pi/3"), pi3)
+    tkconfigure(pi56, variable=pi56Value)
+    tkgrid(tklabel(tt, text="5pi/6"), pi56)
+    tkconfigure(pi6, variable=pi6Value)
+    tkgrid(tklabel(tt, text="pi/6"), pi6)
+           }
+  OnOK <- function()
+  {
+     tkdestroy(tt)
+     ff1 <- as.numeric(tclvalue(ceroValue))
+     ff2 <- as.numeric(tclvalue(piValue))
+     ff3 <- as.numeric(tclvalue(pi2Value))
+     if(.wvari$s==12){
+       ff4 <- as.numeric(tclvalue(pi23Value))
+       ff5 <- as.numeric(tclvalue(pi3Value))
+       ff6 <- as.numeric(tclvalue(pi56Value))
+       ff7 <- as.numeric(tclvalue(pi6Value))
+       filtra <- c(ff1,ff2,ff3,ff4,ff5,ff6,ff7)
+              }
+     if(.wvari$s==4){ filtra <- c(ff1,ff2,ff3) }
+     Fil.vari <- filtrar(.wvari$vari, .wvari$s, .wvari$t0, filtra, plot=TRUE)[[1]]
+
+     string    <- tclvalue(tkcmd(.treeWidget, "selection", "get"))
+     newstring <- paste("Fil_", string, sep="")
+
+     aux <- filtra[1]
+     for(i in 2:(.wvari$s/2+1))
+       aux <- paste(aux, filtra[i], sep="")
+     #showlabel <- paste(newstring, "     ", aux, sep="")
+     showlabel <- newstring <- paste(newstring, aux, sep="_")
+
+     vari  <- ts(Fil.vari, frequency=.wvari$s, start=.wvari$t0)
+     assign(newstring, list(vari=vari, s=.wvari$s, t0=.wvari$t0, N=length(vari),
+            logvari=.wvari$logvari, label=newstring), env=.GlobalEnv)
+
+     tkinsert(.treeWidget,"end", string, newstring, text=newstring)
+  }
+  OK.but <- tkbutton(tt, text="OK", command=OnOK)
+  tkgrid(OK.but)  
+}
+
 #
 TablaFrec <- function(outfile)
 {
@@ -1969,7 +2052,7 @@ l52 <- "\\usepackage[spanish]{babel}\n"
 l53 <- "\\selectlanguage{spanish}\n"
 l54 <- "\\begin{document}\n"
 #
-l1 <- "\\begin{table}[h] \n"
+l1 <- "\\begin{table}[ht] \n"
 l2 <- "\\centering \n"
 l3 <- "\\caption{Integration versus stationary tests} \\label{Tfrec} \n"
 l4 <- "\\begin{tabular}{rrrrrr} \n \\\\ \n"
@@ -2067,6 +2150,7 @@ TablaDet <- function(outfile)
    tiempo <- matrix(c(1:.wvari$N), ncol=1)
    VFE    <- MVFE(.wvari$vari, .wvari$s, .wvari$t0, "alg")
    ML     <- ret(.wvari$vari, round(10*log10(.wvari$N))+1)
+  # Aquí no es relevante round(...). Sólo tiene que ser suficientemente alto para que ML contenga al menos los Pmax retardos elegidos abajo
    lmdet  <- lm(ML[,1] ~ tiempo + VFE[,1:(.wvari$s-1)])      # incluye constante
    Pmax   <- selecPv6(.wvari$vari, .wvari$s, lmdet)          # método bic-lb
    lmardet <- lm(ML[,1] ~ tiempo + VFE[,1:(.wvari$s-1)] + ML[,2:(Pmax+1)])
@@ -2075,7 +2159,7 @@ TablaDet <- function(outfile)
      et <- contts(lmardet, i)[[2]]
      AR[i,1] <- round(lmardet$coef[i], 2)
      AR[i,2] <- round(et, 2)
-                    }
+   }
    if(.wvari$s==4) {Fvfeaux <- c(3,4,5)}
    if(.wvari$s==12){Fvfeaux <- c(3,4,5,6,7,8,9,10,11,12,13)}
    AR[1,3] <- round(Fsnd(lmardet, .wvari$s-1, .wvari$s+1+Pmax, Fvfeaux), 2)
@@ -2101,10 +2185,10 @@ l29 <- "\\usepackage[spanish]{babel} \n"
 l30 <- "\\selectlanguage{spanish} \n"
 l31 <- "\\begin{document} \n"
 
-l1  <- "\\begin{table}[h] \n"
+l1  <- "\\begin{table}[ht] \n"
 l2  <- "\\centering  \\caption{Deterministic components}  \\label{Tdet} \n"
 l3  <- "\\begin{tabular}{l|rr|rr|rr|} \n"
-l4  <- "& \\multicolumn{2}{c|}{AR($y_t$)} & \\multicolumn{2}{c|}{ADF} & \\multicolumn{2}{|c|}{HEGYBM} \\\\ \n"
+l4  <- "& \\multicolumn{2}{c|}{AR($y_t$)} & \\multicolumn{2}{c|}{ADF} & \\multicolumn{2}{|c|}{HEGY} \\\\ \n"
 l5  <- "\\cline{2-7} \n"
 l6  <- "\\multicolumn{1}{l|}{} &  Coeff & t-stat & Coeff & t-stat & Coeff & t-stat \\\\ \n"
 l7  <- "\\hline \n"
@@ -2178,7 +2262,7 @@ PanelmRMBB <- function()
    bbap(.wvari$vari, .wvari$s, .wvari$t0,
          c(.wvari$t0[1], .wvari$t0[1]+2, .wvari$t0[1]+4, .wvari$t0[1]+6))
      # Serie de al menos 8 anyos
-   bbmp(.wvari$vari, .wvari$s, .wvari$t0, c(1:s), "Prot")
+   bbmp(.wvari$vari, .wvari$t0, c(1:s), "Prot")
      # mplot <- rep(1, s)
      # which(mplot==1)
 #   par(opar)
@@ -2192,22 +2276,12 @@ PanelqRMBBFreq <- function()
   freqg(.wvari)
    bbap(.wvari$vari, .wvari$s, .wvari$t0, c(.wvari$t0[1], .wvari$t0[1]+2, .wvari$t0[1]+4, .wvari$t0[1]+6))
      # Serie de al menos 8 anyos
-   quarterg(.wvari$vari, .wvari$s, .wvari$t0, plot=TRUE)
+   quarterg(.wvari$vari, .wvari$t0, plot=TRUE)
 #  par(opar)
 }
 
 perdiff <- function(label)
 {
-  #vari.env <- new.env(FALSE, NULL)
-  #Fvarinfo(label$label, env.out=vari.env)
-  #vari  <- get("vari", env=vari.env)
-  #vari2 <- get("vari2", env=vari.env)
-  #varit <- get("varit", env=vari.env)
-  #s     <- get("s", env=vari.env)
-  #t0    <- get("t0", env=vari.env)
-  #t02   <- get("t02", env=vari.env)
-  #t0t   <- get("t0t", env=vari.env)
-  #N     <- length(vari)
   vari <- label$vari
   s    <- label$s
   t0   <- label$t0
@@ -2219,44 +2293,52 @@ perdiff <- function(label)
   Y1       <- ML[,2]*VFE
 
   if(s==4){
-    nlscoef <- coef(nls(ML[,1] ~ 0+v1*VFE[,1]+v2*VFE[,2]+v3*VFE[,3]+v4*VFE[,4] +
+    init <- coef(lm(ML[,1] ~ 0 + VFE[,1] + VFE[,2] + VFE[,3] + VFE[,4] +
+                       Y1[,1] + Y1[,2] + Y1[,3] + Y1[,4]))
+
+    nls1 <- nls(ML[,1] ~ 0+v1*VFE[,1]+v2*VFE[,2]+v3*VFE[,3]+v4*VFE[,4] +
                a1*Y1[,1] + a2*Y1[,2] + a3*Y1[,3] + (1/(a1*a2*a3))*Y1[,4],
-               start=list(a1=0.5, a2=0.5, a3=0.5,
-                          v1=1,v2=1,v3=1,v4=1), alg="plinear", trace=FALSE))
-    alphas <- c(nlscoef[1:(s-1)], 1/prod(nlscoef[1:(s-1)]))
-          }
+               start=list(a1=init[5], a2=init[6], a3=init[7],
+                          v1=init[1],v2=init[2],v3=init[3],v4=init[4]), trace=FALSE)
+  }
   if(s==12){
-    nlscoef <- coef(nls(ML[,1] ~ 0+v1*VFE[,1]+v2*VFE[,2]+v3*VFE[,3]+
+    init <- coef(lm(ML[,1] ~ 0 + VFE[,1] + VFE[,2] + VFE[,3]+ VFE[,4] + VFE[,5] + VFE[,6] + VFE[,7] +
+               VFE[,8] + VFE[,9] + VFE[,10] + VFE[,11] + VFE[,12] +
+               Y1[,1] + Y1[,2] + Y1[,3] + Y1[,4] + Y1[,5]+ Y1[,6] + Y1[,7] + Y1[,8] + Y1[,9] +
+               Y1[,10] + Y1[,11] + Y1[,12]))
+
+    nls1 <- nls(ML[,1] ~ 0+v1*VFE[,1]+v2*VFE[,2]+v3*VFE[,3]+
                v4*VFE[,4] + v5*VFE[,5] + v6*VFE[,6] + v7*VFE[,7] +
                v8*VFE[,8] + v9*VFE[,9] + v10*VFE[,10] + v11*VFE[,11] + v12*VFE[,12] +
                a1*Y1[,1]+ a2*Y1[,2]+ a3*Y1[,3] + a4*Y1[,4]+ a5*Y1[,5]+ a6*Y1[,6] +
                a7*Y1[,7]+ a8*Y1[,8]+ a9*Y1[,9] + a10*Y1[,10]+ a11*Y1[,11] +
                (1/(a1*a2*a3*a4*a5*a6*a7*a8*a9*a10*a11))*Y1[,12],
-               start=list(a1=0.7,a2=0.7,a3=0.7,a4=1,a5=1,a6=1,a7=0.3,
-                          a8=0.5,a9=0.5,a10=0.8,a11=0.8,
-                          v1=1,v2=1,v3=1,v4=1,v5=1,v6=1,v7=1,v8=1,v9=1,v10=1,v11=1,v12=1),
-                          alg="plinear", trace=FALSE))
-    alphas <- c(nlscoef[1:(s-1)], 1/prod(nlscoef[1:(s-1)]))
-          }
+               start=list(a1=init[13],a2=init[14],a3=init[15],a4=init[16],a5=init[17],a6=init[18],a7=init[19],
+                          a8=init[20],a9=init[21],a10=init[22],a11=init[23],
+                          v1=init[1],v2=init[2],v3=init[3],v4=init[4],v5=init[5],v6=init[6],v7=init[7],v8=init[8],
+                          v9=init[9],v10=init[10],v11=init[11],v12=init[12]), trace=FALSE)
+  }
+  nlscoef <- coef(nls1)
+  alphas <- c(nlscoef[1:(s-1)], 1/prod(nlscoef[1:(s-1)]))
 
   ifelse(t0[2] == s, seas <- 1, seas <- t0[2]+1)
   for(i in 2:N){
     difpvari[i] <- vari[i] - alphas[seas]*vari[i-1]
     ifelse(seas == s, seas <- 1, seas <- seas+1)
-               }
+  }
 
   difpvari <- ts(difpvari, frequency=s, start=t0)        # usado para gráficos
   # difpvari2 <- ts(difpvari[2:N], frequency=s, start=t0)  # usar con la opción urootmenu=TRUE
 
   #  if(s==4)
-  #    quarterg(difpvari, .wvari$s, .wvari$t0, plot=TRUE)
+  #    quarterg(difpvari, .wvari$t0, plot=TRUE)
   #  if(s==12)
-  #    bbmp(difpvari, .wvari$s, .wvari$t0, c(1:12), "Prot", plot=TRUE)
+  #    bbmp(difpvari, .wvari$t0, c(1:12), "Prot", plot=TRUE)
 
   # cambiar variables internas: t0t, varit,...
-    # sólo usado por uroot cuando para transformar la serie con la que se está trabajando.
+    # sólo usado por uroot para transformar la serie con la que se está trabajando.
 
-  # print(summary(nlscoef))
+  print(summary(nls1))
   difpvari
 }
 
@@ -2872,8 +2954,7 @@ GetDataInfo <- function()   # Datos-Descripción
   tkconfigure(rb1, variable=rbValue, value="Trimestral")
   tkconfigure(rb2, variable=rbValue, value="Mensual")
   tkconfigure(rb3, variable=rbValue, value="Anual")
-  tkgrid(tklabel(ttdinfo, text="  Register the periodicity of the series:",
-      fg="blue"), sticky="w")
+  tkgrid(tklabel(ttdinfo, text="  Register the periodicity of the series:", fg="blue"), sticky="w")
   tkgrid(tklabel(ttdinfo, text="Quarterly"), rb1)
   tkgrid(tklabel(ttdinfo, text="Monthly"), rb2)
   tkgrid(tklabel(ttdinfo, text="Anual"), rb3)
@@ -2884,8 +2965,16 @@ GetDataInfo <- function()   # Datos-Descripción
   entry.a0 <- tkentry(ttdinfo, width="4", textvariable=a0)
   entry.s0 <- tkentry(ttdinfo, width="2", textvariable=s0)
   tkgrid(tklabel(ttdinfo, text="  Introduce the year and season of the"), sticky="w")
-  tkgrid(tklabel(ttdinfo, text="     first observation:", fg="blue"),
-       entry.a0, entry.s0, sticky="w")
+  tkgrid(tklabel(ttdinfo, text="     first observation:", fg="blue"), entry.a0, entry.s0, sticky="w")
+
+  rblog1 <- tkradiobutton(ttdinfo)
+  rblog2 <- tkradiobutton(ttdinfo)
+  rblogValue <- tclVar("Original data")
+  tkconfigure(rb1, variable=rbValue, value="Original data")
+  tkconfigure(rb2, variable=rbValue, value="Logarithms")
+  tkgrid(tklabel(ttdinfo, text="  Indicate the scale of the data:", fg="blue"), sticky="w")
+  tkgrid(tklabel(ttdinfo, text="Original data"), rblog1)
+  tkgrid(tklabel(ttdinfo, text="Logarithms"), rblog2)
 
   OnOK <- function()
   {
@@ -2900,6 +2989,11 @@ GetDataInfo <- function()   # Datos-Descripción
         s <- 12
      if(tclvalue(rbValue) == "Anual")
         s <- 1
+
+     if(tclvalue(rblogValue) == "Original data")
+        logvari <- FALSE
+     if(tclvalue(rblogValue) == "Logarithms")
+        logvari <- TRUE
 
      t0    <- rep(0, 2)
      t0[1] <- as.numeric(tclvalue(a0))
@@ -3218,7 +3312,7 @@ ysooys <- function(yso, t0, N, s)
   if(length(yso)==1)
     out <- index[which(index[,3]==yso),1:2]
 
-  list(out, index)
+  list(out=out, index=index)
 }
 
 #
@@ -3443,7 +3537,7 @@ Makequarterg <- function(transf)
     varibb <- perdiff(.wvari)
 
   opar <- par(mar=c(8,4.7,5,1.5), ps=18, font=1,tcl=-0.5, cex.axis=0.7, las=1)
-  quarterg(varibb, .wvari$s, .wvari$t0, plot=TRUE)
+  quarterg(varibb, .wvari$t0, plot=TRUE)
   par(opar)
 }
 
@@ -3609,12 +3703,12 @@ Makebbmp <- function(transf)
     }
     if (rbVal=="Panel de graficos con todos los meses"){
       opar <- par(mfrow=c(2,2), mar=c(3,4.5,1.5,1), ps=18, font=1, tcl=-0.5, cex.axis=0.7, las=1)
-      bbmp(varibb, .wvari$s, .wvari$t0, which(mplot==1), vers, plot=TRUE)
+      bbmp(varibb, .wvari$t0, which(mplot==1), vers, plot=TRUE)
       par(opar)
                                                        }
     if (rbVal=="Seleccionar meses en un grafico"){
       opar <- par(mar=c(8,4.7,5,1.5), ps=18, font=1, tcl=-0.5, cex.axis=0.7, las=1)
-      bbmp(varibb, .wvari$s, .wvari$t0, which(mplot==1), vers, plot=TRUE)
+      bbmp(varibb, .wvari$t0, which(mplot==1), vers, plot=TRUE)
       par(opar)                                  }
     rm(vers, mplot)
   }
@@ -3699,9 +3793,9 @@ Makebbcn <- function()
      if(rbVal == "Color"){ selecolor <- TRUE }
 
      if(.wvari$s==4)
-        MR <- quarterg(.wvari$vari, .wvari$s, .wvari$t0, plot=FALSE)
+        MR <- quarterg(.wvari$vari, .wvari$t0, plot=FALSE)
      if(.wvari$s==12)
-        MR <- bbmp(.wvari$vari, .wvari$s, .wvari$t0, c(1:.wvari$s), "Prot", plot=FALSE)
+        MR <- bbmp(.wvari$vari, .wvari$t0, c(1:.wvari$s), "Prot", plot=FALSE)
      opar <- par(mar=c(6,3.5,4,2))
      bbcn(MR, .wvari$s, .wvari$t0, color=selecolor)
      par(opar)
@@ -3728,9 +3822,9 @@ Makebb3D <- function()
     xTxt <- as.integer(x)+rootx
     yTxt <- as.integer(y)+rooty
     if(.wvari$s==4)
-       MR <- quarterg(.wvari$vari, .wvari$s, .wvari$t0, plot=FALSE)
+       MR <- quarterg(.wvari$vari, .wvari$t0, plot=FALSE)
     if(.wvari$s==12)
-       MR <- bbmp(.wvari$vari, .wvari$s, .wvari$t0, c(1:.wvari$s), "Prot", plot=FALSE)
+       MR <- bbmp(.wvari$vari, .wvari$t0, c(1:.wvari$s), "Prot", plot=FALSE)
     bb3D(MR, .wvari$s, .wvari$t0, color=selecolor, as.integer(x), as.integer(y))
   }
   tkbind(ttplot2, "<Button-3>", RightClick2)
@@ -3754,9 +3848,9 @@ Makebb3D <- function()
     if(rbVal == "Color"){ selecolor <<- TRUE }
 
     if(.wvari$s==4)
-       MR <- quarterg(.wvari$vari, .wvari$s, .wvari$t0, plot=FALSE)
+       MR <- quarterg(.wvari$vari, .wvari$t0, plot=FALSE)
     if(.wvari$s==12)
-       MR <- bbmp(.wvari$vari, .wvari$s, .wvari$t0, c(1:.wvari$s), "Prot", plot=FALSE)
+       MR <- bbmp(.wvari$vari, .wvari$t0, c(1:.wvari$s), "Prot", plot=FALSE)
     opar <- par(mar=c(6,3.5,4,2))
     bb3D(MR, .wvari$s, .wvari$t0, color=selecolor, 30, 30)
     par(opar)
@@ -4139,8 +4233,8 @@ MakePanelmBB1 <- function()
 
   tkdestroy(ttplot)
   opar <- par(mfrow=c(2,2), mar=c(2,3,3.5,2), tcl=-0.5, cex.axis=0.7, cex.main=1, las=1)
-  bbmp(.wvari$vari, .wvari$s, .wvari$t0, c(1:.wvari$s), "Prot", plot=TRUE)
-  # bbmp((ret(vari,2)[,1]-ret(vari,2)[,2]), .wvari$s, .wvari$t0,
+  bbmp(.wvari$vari, .wvari$t0, c(1:.wvari$s), "Prot", plot=TRUE)
+  # bbmp((ret(vari,2)[,1]-ret(vari,2)[,2]), .wvari$t0,
   #     , c(1:.wvari$s), "Prot", plot=TRUE)
   par(opar)
 }
@@ -4156,8 +4250,7 @@ MakePanelmBB2 <- function()
 
   tkdestroy(ttplot)
   opar <- par(mfrow=c(2,2), mar=c(2,3,3.5,2), tcl=-0.5, cex.axis=0.7, cex.main=1, las=1)
-  bbmp(ret(.wvari$vari,2)[,1]-ret(.wvari$vari,2)[,2],
-       .wvari$s, .wvari$t0, c(1:.wvari$s), "Prot", plot=TRUE)
+  bbmp(ret(.wvari$vari,2)[,1]-ret(.wvari$vari,2)[,2], .wvari$t0, c(1:.wvari$s), "Prot", plot=TRUE)
   par(opar)
 }
 #
@@ -4269,8 +4362,8 @@ MakeQPanelBB <- function()
    .wvari <<- ExeString(c(string, ""))
 
    opar <- par(mfrow=c(1,2), mar=c(2,2.5,3.5,1.5), tcl=-0.5, cex.axis=0.8, cex.main=1, las=1)
-   MQ <- quarterg(.wvari$vari, .wvari$s, .wvari$t0, plot=TRUE)
-   quarterg((ret(.wvari$vari,2)[,1]-ret(.wvari$vari,2)[,2]), .wvari$s, .wvari$t0, plot=TRUE)
+   MQ <- quarterg(.wvari$vari, .wvari$t0, plot=TRUE)
+   quarterg((ret(.wvari$vari,2)[,1]-ret(.wvari$vari,2)[,2]), .wvari$t0, plot=TRUE)
    par(opar)
 }
 
@@ -4996,7 +5089,7 @@ lookuptablas <- function(code)
                          CV3 = c(7.68, 7.72, 7.66, 7.53),
                          CV4 = c(9.22, 8.74, 8.92, 8.93))
     tablaVCaux <- t(data.frame(signf = c("0.99", "0.975", "0.95", "0.90"),
-                               label = c(".", "*", "**", "***")))
+                               label = c("***", "**", "*", ".")))
     tail <- "right"
   }
   if(code=="HEGY110Foddeven")
@@ -5182,7 +5275,7 @@ RecTestLaTeX <- function()  # poner .tex al elegir archivo
     cat("\\documentclass[11pt]{article}\n", file=outfile, append=TRUE)
     cat("\\begin{document} \n\n", file=outfile, append=TRUE)
 
-    cat("\\begin{table}[h]\n", file=outfile, append=TRUE)
+    cat("\\begin{table}[ht]\n", file=outfile, append=TRUE)
     cat("\\centering\n", file=outfile, append=TRUE)
     cat(paste("\\caption{Recursive testing. ", testname, " test. ", "Frequency ", freqname, "}\n",
               sep=""), file=outfile, append=TRUE)
@@ -5226,25 +5319,52 @@ RecTestLaTeX <- function()  # poner .tex al elegir archivo
   # colum es una columna de la tabla
   # digits es el número de decimales (se permite que el último sea cero)
 
-Tround <- function(tabla, colum, digits)
+Tround <- function(tabla, column, digits)
 {
   catround <- function(x, digits)
   {
     rx <- as.character(round(x, digits=digits))
-    logic <- FALSE; i <- 1
-    if(substr(rx, 2, 2) != "")
+
+    rxchar <- rep(NA, nchar(rx))
+    for(i in 1:nchar(rx))
+      rxchar[i] <- substring(rx, i, i)
+
+    if(length(which(rxchar==".")) == 0)
     {
-      while(logic == FALSE){
-        logic <- substr(rx, i, i) == "."
-        i <- i+1
+       aux1 <- rep("0", digits); aux2 <- "0"
+       for(i in 1:(digits-1))
+          aux2 <-  paste(aux2, aux1[i], sep="")
+       rx <- paste(rx, aux2, sep=".")
+    }
+    if(digits > 0 && length(which(rxchar==".")) > 0)
+    {
+      logic <- FALSE; i <- 1
+      if(substr(rx, 2, 2) != "")
+      {
+        while(logic == FALSE){
+          logic <- substr(rx, i, i) == "."
+          i <- i+1
+        }
+        if(nchar(substr(rx, i, i+digits)) < digits){
+           n0 <- digits - nchar(substr(rx, i, i+digits))
+           aux1 <- rep("0", n0)
+           for(i in 1:(n0-1))
+              aux2 <-  paste(aux1[i], aux1[i+1], sep="")
+           rx <- paste(rx, aux2, sep="")
+        }
       }
-      ifelse(nchar(substr(rx, i, i+digits)) < digits, rx <- paste(rx, "0", sep=""), rx <- rx)
+      if(nchar(rx) == 1){
+        aux1 <- rep("0", digits)
+        for(i in 1:(digits-1))
+          aux2 <-  paste(aux1[i], aux1[i+1], sep="")
+        rx <- paste(rx, aux2, sep=".")
+      }
     }
     rx
   }
 
   for(i in 1:nrow(tabla))
-    tabla[i,colum] <- catround(as.numeric(tabla[i,colum]), digits)
+    tabla[i,column] <- catround(as.numeric(tabla[i,column]), digits)
   tabla
 }
 
@@ -5796,7 +5916,7 @@ RecursiveTesting <- function(testname)
 
   for(i in 0:as.integer(Nsb))
   {
-    t0subm <- ysooys(c((tN[1]-7-i), tN[2]), t0, N, s)[[1]] - 1
+    t0subm <- ysooys(c((tN[1]-7-i), tN[2]), t0, N, s)[[1]] + 1  # - 1
     t0aux <- ysooys(t0subm, t0, N, s)[[1]]
     tablaPMs[(i+1),4] <- paste(ysooys(t0subm, t0, N, s)[[1]][1],
                                ysooys(t0subm, t0, N, s)[[1]][2], sep=".")
@@ -5965,7 +6085,7 @@ urootgui <- function()
   tclRequire("BWidget")
 #
   .tt <<- tktoplevel()
-  tkwm.title(.tt, "uroot R-GUI 1.0")
+  tkwm.title(.tt, "uroot R-GUI 1.2")
 
   xScr        <- tkscrollbar(.tt, command=function(...)tkxview(treeWidget,...),
                             orient="horizontal")
@@ -6115,6 +6235,10 @@ tkadd(TransfMenu, "command", label="Periodic differences", command=function(){
        assign(newstring, list(vari=vari, s=.wvari$s, t0=t0,
                N=length(vari), logvari=.wvari$logvari, label=newstring), env=.GlobalEnv)
        tkinsert(.treeWidget,"end", string, newstring, text=newstring) })
+
+tkadd(TransfMenu, "command", label="--- --- ---", command=function(){})
+
+tkadd(TransfMenu, "command", label="Filter", command=function(){MakeFiltra()})
 
 tkadd(TransfMenu, "command", label="--- --- ---", command=function(){})
 
@@ -6288,8 +6412,8 @@ tkadd(AyudaMenu, "command", label="Html help", command=function()
       browseURL(file.path(R.home(), "library/uroot/html/00Index.html"),
                 browser=getOption("browser")))
 
-tkadd(AyudaMenu, "command", label="Maintainer homepage", command=function()
-      browseURL("http://www.bl.ehu.es/~jedlobej", browser=getOption("browser")))
+#tkadd(AyudaMenu, "command", label="Maintainer homepage", command=function()
+#      browseURL("http://www.bl.ehu.es/~jedlobej", browser=getOption("browser")))
 
 tkadd(topMenu, "cascade", label="  Help", menu=AyudaMenu)
 }

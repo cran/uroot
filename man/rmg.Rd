@@ -11,17 +11,17 @@
 
    \arguments{
        \item{vari}{a ts object.}
-       \item{krmg}{the number of observations employed for calculating each point.}
+       \item{krmg}{the number of observations in the intervals in which the the range and mean are calculated.}
    }
 
    \details{
      In order to ensure that enough observations are employed for calculating each point,
-it may choose a choose a value of <code>krmg</code> based on the number of observations T, for example: sqrt(T).
+it may choose a choose a value of \code{krmg} based on the number of observations N, for example: sqrt(N).
    }
 
-   \value{ Shows a plot of the range against the mean, correlation between the range and the mean.}
+   \value{ A graphic of the range against the mean, and the correlation between the range and the mean.}
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
 
    \examples{
      data(AirPassengers)

@@ -9,5 +9,5 @@ HEGY.test          Hylleberg-Engle-Granger-Yoo test
 KPSS.test          Kwiatkowski-Phillips-Schmidt-Shin test
 quarterg           Buys-Ballot quarterly plot
 rmg                Range mean plot
-
+ysooys             Search for the date of an observation and vice versa
 

@@ -21,12 +21,12 @@
    \details{
       \code{filtra} is a 0-1 vector of length s/2+1. The frequencies are ordered in the vector as follows: c (zero, pi, pi/2) for quarterly series and c (zero, pi, pi/2, 2pi/3, pi/3, 5pi/6, pi/6) for monthly series.
 
-A zero in the element "i" of the vector indicates that the frequency associated to this element must not be filtered. The frequency related to elements equals 1 are filtered.
+A zero in the element \code{i} of the vector indicates that the cycle associated to the corresponding frequency will not be filtered. The cycles related to frequencies that are set equal to 1 are filtered.
    }
 
    \value{ A list containing: Data of the filtered series, coefficients and lags of the polynomial that configure the filter. }
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
 
    \examples{
       ## Filter seasonal frequencies.

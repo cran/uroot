@@ -3,8 +3,7 @@
   \title{Canova-Hansen test for seasonal stability}
 
   \description{
-      Compute the Canova-Hansen test statistic for examining the null hypothesis
-seasonal stability and against the alternative that the analysed season is not regular. This version of the CH test is equivalent to a KPSS test for each seasonal path.
+      This function computes the Canova-Hansen statistic for testing the null hypothesis that seasonal stability exists against the alternative that the analysed season is not regular. This version of the CH test is equivalent to a KPSS test for each seasonal path.
    }
 
    \usage{
@@ -12,7 +11,7 @@ seasonal stability and against the alternative that the analysed season is not r
    }
 
    \arguments{
-       \item{label}{a list object with information about the series. The list consist of the following elements. \code{vari}, a ts object with the data of the series, \code{s}, the periodicity of the series (4, 12 or 1 for quarterly, monthly or anual data), \code{t0}, a vector of two elements indicating the year and season of the first observation, \code{N}, number of observations.}
+       \item{label}{a list object with information about the series. The list consist of the following elements. \code{vari}, a ts object with the data of the series, \code{s}, the periodicity of the series (4, 12, or 1 for quarterly, monthly, or anual data), \code{t0}, a vector of two elements indicating the year and season of the first observation, \code{N}, number of observations.}
        \item{lmax}{lag truncation parameter.}
        \item{seas}{a vector of length one indicating the season to analyse.}
        \item{showcat}{how the results are showed and stored. If TRUE a brief explanation reports the results. If FALSE a list object stores the results.}
@@ -30,7 +29,7 @@ seasonal stability and against the alternative that the analysed season is not r
 
    \value{CH test statistic.}
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
 
    \references{F. Canova and B.E. Hansen (1995), Are seasonal patterns constant over time? A test for seasonal stability. <em>Journal of Business and Economic Statistics</em>, <b>13</b>, 237-252.
 

@@ -3,7 +3,7 @@
   \title{Buys-Ballot anual path plot}
 
   \description{
-     Plot anual paths.
+     Graphic of the anual paths.
    }
 
    \usage{
@@ -18,14 +18,14 @@
    }
 
    \seealso{
-      \code{\link{quarterg}, \link{bbmp}, \link{bb3D}, \link{bbcn}}.
+      \code{\link{quarterg}}, \code{\link{bbmp}}, \code{\link{bb3D}}, and \code{\link{bbcn}}.
    }
 
    \value{
-      anual path plot.
+      Graphic of the anual paths.
    }
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}.}
+   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
 
    \examples{
      ## Plot the following anual paths: 1949, 1950, 1953, 1957
