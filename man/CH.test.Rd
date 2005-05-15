@@ -18,8 +18,8 @@
        \item{showcat}{how the results are showed and stored. If TRUE a brief explanation reports the results. If FALSE a list object stores the results.}
    }
 
-   \Details{
-      Elements of \code{frec} must be set equal to 0 if the season assigned to this element is not considered and equals to 1 for the frequencies to analyse. The position of each frequency in the vector is as follows: c(pi/2, pi) for quarterly series and c(pi/6, 5pi/6, pi/3, 2pi/3, pi/2, pi) for monthly series.
+   \details{
+      Elements of \code{frec} must be set equal to 0 if the season assigned to this element is not considered and equals to 1 for the frequencies to analyse. The position of each frequency in the vector is as follows: c(pi/2, pi) for quarterly series and c(pi/6, pi/3, pi/2, 2pi/3, 5pi/6, pi) for monthly series.
 
       The lag truncation parameter for the covariance matrix is \eqn{round(s*(N/100)^{0.25})}, where \eqn{s} is the periodicity of the series and \eqn{N} the length of the series.
    }

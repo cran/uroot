@@ -17,7 +17,7 @@
        \item{showcat}{how the results are showed and stored. If TRUE a brief explanation reports the results. If FALSE a list object stores the results.}
    }
 
-   \Details{
+   \details{
       Lag truncation parameter \code{lmax} indicates the number of autocovariances considered different from zero for estimating the variance of the residuals.
 
       \code{seas} is a numeric object indicating the position of the season to analyse.
@@ -31,7 +31,7 @@
 
    \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
 
-   \references{F. Canova and B.E. Hansen (1995), Are seasonal patterns constant over time? A test for seasonal stability. <em>Journal of Business and Economic Statistics</em>, <b>13</b>, 237-252.
+   \references{F. Canova and B.E. Hansen (1995), Are seasonal patterns constant over time? A test for seasonal stability. \emph{Journal of Business and Economic Statistics}, <b>13</b>, 237-252.
 
       D. Kwiatkowski, P.C.B. Phillips, P. Schmidt and Y. Shin (1992), Testing the null hypothesis of stationarity against the alternative of a unit root: How sure are we that economic time series have a unit root? \emph{Journal of Econometrics}, \bold{54}, 159-178.
    }

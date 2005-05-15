@@ -442,7 +442,6 @@ ADF.test <- function(label, compdet, selecP, Mvfic, VFEp, showcat)
  }
   ifelse(rsug[1]==-1, retardos <- Pmax, retardos <- rsug)
 
-
 # Summary
 
   if(showcat==TRUE){
@@ -454,7 +453,7 @@ ADF.test <- function(label, compdet, selecP, Mvfic, VFEp, showcat)
     cdlabel <- na.omit(c(cd1, cd2, cd3, cd4, cd5))
     cdrdo   <- data.frame(Components=cdlabel, rdodet[,1:2])
       cat(c("\n ------ ADF test ------ \n"))
-      cat(c("Statistic for the null hypothesis of \n unit root: ", t.adf, "\n\n "))
+      cat(c("Statistic for the null hypothesis of \n unit root: ", t.adf, "\n\n"))
       cat("Deterministic components estimates: \n")
       print(cdrdo)
       if(compdet[3]==1)
@@ -807,7 +806,7 @@ CH.test <- function(label, frec, f0, DetTr, showcat)
  for(i in 1:nrow(Fhat)){
    for(n in 1:(s-1))
      Fhat[i,n] <- sum(Fhataux[1:i,n]) # F estimada
-}
+ }
 
 # Omega supra-f estimada  (Omfhat)
 
@@ -1206,7 +1205,7 @@ HEGY.test <- function(label, compdet, selecP, Mvfic, VFEp, showcat)
  Mregdet <- as.matrix(data.frame(Ct, TD, VFE, Mvfic, VFEp, Myr))
  aux <- rep(1, ncol(Mregdet))
  for(i in 1:ncol(Mregdet)){
-   if(length(which(Mregdet[,i]==0))==N)
+   if(length(which(Mregdet[,i]==0))==N)  
    aux[i] <- 0
                           }
  Mregdet <- Mregdet[,which(aux==1)]
@@ -1337,7 +1336,7 @@ HEGY.test <- function(label, compdet, selecP, Mvfic, VFEp, showcat)
   cdrdo   <- data.frame(Components=cdlabel, rdodet[,1:2])
 
     cat(c("\n ------ HEGY test ------ \n\n"))
-    cat(c(" Statistics about the frequencies: \n "))
+    cat(c(" Statistics about the frequencies: \n"))
     cat(c("   t-statistics:  \n "))
     print(freqrdo[,1:3])
     cat(c("\n   F-statistics: \n "))
@@ -1415,7 +1414,8 @@ KPSS.test <- function(vari, l, showcat)
 Omegaf <- function(N, s, ehat, Fhataux)
 {
  #m   <- round(4*(N/100)^0.25)
- m   <- round(12*(N/100)^0.25)
+ #m   <- round(12*(N/100)^0.25)
+ m   <- round(s*(N/100)^0.25)
  wnw <- c(1:(m+1))
  j   <- 1
  for(k in -m:m)
@@ -2653,18 +2653,18 @@ MakeCH.test <- function()
 
   if(.wvari$s==12){
     pi6  <- tkcheckbutton(ttch)
-    pi56 <- tkcheckbutton(ttch)
     pi3  <- tkcheckbutton(ttch)
     pi23 <- tkcheckbutton(ttch)
+    pi56 <- tkcheckbutton(ttch)
            }
   pi2  <- tkcheckbutton(ttch)
   pi   <- tkcheckbutton(ttch)
 
   if(.wvari$s==12){
     pi6Value  <- tclVar("0")
-    pi56Value <- tclVar("0")
     pi3Value  <- tclVar("0")
     pi23Value <- tclVar("0")
+    pi56Value <- tclVar("0")
            }
   pi2Value  <- tclVar("0")
   piValue   <- tclVar("0")
@@ -2672,15 +2672,17 @@ MakeCH.test <- function()
   if(.wvari$s==12){
     tkconfigure(pi6, variable=pi6Value)
     tkgrid(tklabel(ttch, text="pi/6"), pi6)
-    tkconfigure(pi56, variable=pi56Value)
-    tkgrid(tklabel(ttch, text="5pi/6"), pi56)
     tkconfigure(pi3, variable=pi3Value)
     tkgrid(tklabel(ttch, text="pi/3"), pi3)
-    tkconfigure(pi23, variable=pi23Value)
-    tkgrid(tklabel(ttch, text="2pi/3"), pi23)
-           }
+  }
   tkconfigure(pi2, variable=pi2Value)
   tkgrid(tklabel(ttch, text="pi/2"), pi2)
+  if(.wvari$s==12){
+    tkconfigure(pi23, variable=pi23Value)
+    tkgrid(tklabel(ttch, text="2pi/3"), pi23)
+    tkconfigure(pi56, variable=pi56Value)
+    tkgrid(tklabel(ttch, text="5pi/6"), pi56)
+  }
   tkconfigure(pi, variable=piValue)
   tkgrid(tklabel(ttch, text="pi"), pi)
 
@@ -2710,11 +2712,6 @@ MakeCH.test <- function()
            frec[1] <- 1
         if(mVal =="0")
            frec[1] <- 0
-        mVal <- as.character(tclvalue(pi56Value))
-        if(mVal =="1")
-           frec[5] <- 1
-        if(mVal =="0")
-           frec[5] <- 0
         mVal <- as.character(tclvalue(pi3Value))
         if(mVal =="1")
           frec[2] <- 1
@@ -2724,20 +2721,27 @@ MakeCH.test <- function()
         if(mVal =="1")
            frec[4] <- 1
         if(mVal =="0")
-            frec[4] <- 0
+           frec[4] <- 0
+        mVal <- as.character(tclvalue(pi56Value))
+        if(mVal =="1")
+           frec[5] <- 1
+        if(mVal =="0")
+           frec[5] <- 0
       }
+
       if(.wvari$s == 12){ aux <- c(3,6) }
       if(.wvari$s == 4){ aux <- c(1,2) }
       mVal <- as.character(tclvalue(pi2Value))
-        if(mVal =="1")
-           frec[aux[1]] <- 1
-        if(mVal =="0")
-           frec[aux[1]] <- 0
+      if(mVal =="1")
+         frec[aux[1]] <- 1
+      if(mVal =="0")
+         frec[aux[1]] <- 0
       mVal <- as.character(tclvalue(piValue))
-        if(mVal =="1")
-           frec[aux[2]] <- 1
-        if(mVal =="0")
-           frec[aux[2]] <- 0
+      if(mVal =="1")
+         frec[aux[2]] <- 1
+      if(mVal =="0")
+         frec[aux[2]] <- 0
+
       rdoCH <- CH.test(.wvari, frec, f0, DetTr=DetTr, showcat=TRUE) # l)
     }
     if (tclvalue(rbValue) == "summ")
@@ -2760,7 +2764,6 @@ MakeCH.test <- function()
       if(.wvari$s==4)
          rdoch <- data.frame("f.pi.2"=CH[5], "f.pi"=CH[6], "Joint-test"=CH[7])
       cat("\n ------ CH test ------ \n\n")
-      print(rdoch)
     }
     tkconfigure(.treeWidget, cursor="xterm")
   }
@@ -2860,8 +2863,14 @@ MakeHEGY.test <- function()
   rb5 <- tkradiobutton(tthegybm)
   rb6 <- tkradiobutton(tthegybm)
   rbValue <- tclVar("BIC-LB")
-  yself <- tclVar()
-  entry.yself <- tkentry(tthegybm, width="3", textvariable=yself)
+  yself1 <- tclVar()
+  yself2 <- tclVar()
+  yself3 <- tclVar()
+  yself4 <- tclVar()
+  entry.yself1 <- tkentry(tthegybm, width="3", textvariable=yself1)
+  entry.yself2 <- tkentry(tthegybm, width="3", textvariable=yself2)
+  entry.yself3 <- tkentry(tthegybm, width="3", textvariable=yself3)
+  entry.yself4 <- tkentry(tthegybm, width="3", textvariable=yself4)
   tkconfigure(rb1, variable=rbValue, value="AIC-LB")
   tkconfigure(rb2, variable=rbValue, value="BIC-LB")
   tkconfigure(rb3, variable=rbValue, value="AIC-Lüt")
@@ -2874,7 +2883,7 @@ MakeHEGY.test <- function()
   tkgrid(tklabel(tthegybm, text="AIC-top-down"), rb3)
   tkgrid(tklabel(tthegybm, text="BIC-top-down"), rb4)
   tkgrid(tklabel(tthegybm, text="Significant lags"), rb5)
-  tkgrid(tklabel(tthegybm, text="By yourself"), rb6, entry.yself)
+  tkgrid(tklabel(tthegybm, text="By yourself"), rb6, entry.yself1, entry.yself2, entry.yself3, entry.yself4)
 
   Definir1 <- tkbutton(tthegybm, text="Define", command=Makevfic)
   Definir2 <- tkbutton(tthegybm, text="Define", command=MakeVFEp)
@@ -2918,7 +2927,8 @@ MakeHEGY.test <- function()
       if(tclvalue(rbValue) == "Signf")
         selecP <- "signf"
       if(tclvalue(rbValue) == "Tu mismo")
-        selecP <- as.numeric(tclvalue(yself))
+        selecP <- c(as.numeric(tclvalue(yself1)), as.numeric(tclvalue(yself2)),
+                    as.numeric(tclvalue(yself3)), as.numeric(tclvalue(yself4)))
 
       # VFIC
       aux <- length(which(Mvfic[1,] >= 0))
@@ -2942,6 +2952,8 @@ GetDataInfo <- function()   # Datos-Descripción
   ttdinfo  <- tktoplevel()
   tkwm.title(ttdinfo, "Description")
 
+  tkgrid(tklabel(ttdinfo, text="Please, describe the data.", fg="blue"), sticky="w")
+
   nombre <- tclVar()
   tkgrid(tklabel(ttdinfo, text="  Series label:", fg="blue"), sticky="w")
   entry.nombre <- tkentry(ttdinfo, width="10", textvariable=nombre)
@@ -2964,14 +2976,14 @@ GetDataInfo <- function()   # Datos-Descripción
 
   entry.a0 <- tkentry(ttdinfo, width="4", textvariable=a0)
   entry.s0 <- tkentry(ttdinfo, width="2", textvariable=s0)
-  tkgrid(tklabel(ttdinfo, text="  Introduce the year and season of the"), sticky="w")
+  tkgrid(tklabel(ttdinfo, text="  Introduce the year and season of the", fg="blue"), sticky="w")
   tkgrid(tklabel(ttdinfo, text="     first observation:", fg="blue"), entry.a0, entry.s0, sticky="w")
 
   rblog1 <- tkradiobutton(ttdinfo)
   rblog2 <- tkradiobutton(ttdinfo)
   rblogValue <- tclVar("Original data")
-  tkconfigure(rb1, variable=rbValue, value="Original data")
-  tkconfigure(rb2, variable=rbValue, value="Logarithms")
+  tkconfigure(rblog1, variable=rblogValue, value="Original data")
+  tkconfigure(rblog2, variable=rblogValue, value="Logarithms")
   tkgrid(tklabel(ttdinfo, text="  Indicate the scale of the data:", fg="blue"), sticky="w")
   tkgrid(tklabel(ttdinfo, text="Original data"), rblog1)
   tkgrid(tklabel(ttdinfo, text="Logarithms"), rblog2)
@@ -3129,10 +3141,10 @@ MakeDGPsim <- function()
 
 #
 
-ReadDataTXT <- function()
+ReadDataCSV <- function()
 {
   tttxt <- tktoplevel()
-  tkwm.title(tttxt, "Read data from text file")
+  tkwm.title(tttxt, "Read data from csv file")
 
   espaciosep <- tkradiobutton(tttxt)
   comasep    <- tkradiobutton(tttxt)
@@ -3183,86 +3195,15 @@ ReadDataTXT <- function()
      if(mVal =="0")
         headerarg <- FALSE
 
-     datos <<- read.csv(datafile, header=headerarg,
-                   sep=tclvalue(sepValue), dec=tclvalue(decValue),
-                   na.strings="NA")
+     datos <<- read.csv(datafile, header=headerarg, sep=tclvalue(sepValue),
+                        dec=tclvalue(decValue), na.strings="NA")
 
      variaux <- datos[,as.numeric(tclvalue(datacolumn))]; # rm(datos)
      vari    <<- as.numeric(as.matrix(variaux))
 
-     msg <- paste("Don't forget describe the series (Menu-Data->Description)", sep="")
-     tkmessageBox(title="Series info", message=msg, icon="info")
-   }
-   OK.but <- tkbutton(tttxt, text="OK", command=OnOK)
-   tkgrid(OK.but)
-}
-
-#
-
-# Cuando hay  8 NA seguidos considera que se acaba la serie
-ReadDataCSV <- function()
-{
-  tttxt <- tktoplevel()
-  tkwm.title(tttxt, "Read data from CSV file")
-
-  comadec  <- tkradiobutton(tttxt)
-  puntodec <- tkradiobutton(tttxt)
-  decValue <- tclVar(",")
-  tkconfigure(comadec, variable=decValue, value=",")
-  tkconfigure(puntodec, variable=decValue, value=".")
-  tkgrid(tklabel(tttxt, text="  Character for decimal points:", fg="blue"), sticky="w")
-  tkgrid(tklabel(tttxt, text="Comma"), comadec)
-  tkgrid(tklabel(tttxt, text="Dot"), puntodec)
-
-  tkgrid(tklabel(tttxt, text="  The data file contain a header with the series names:",
-       fg="blue"), sticky="w")
-  header      <- tkcheckbutton(tttxt)
-  headerValue <- tclVar("1")
-
-  tkconfigure(header, variable=headerValue)
-  tkgrid(tklabel(tttxt, text="With header"), header)
-
-  datacolumn <- tclVar()
-  tkgrid(tklabel(tttxt, text="  Introduce the column that contains the series to analyse:",
-      fg="blue"), sticky="w")
-  entry.datacolumn <- tkentry(tttxt, width="5", textvariable=datacolumn)
-  tkgrid(entry.datacolumn)
-
- OnOK <- function(){
-    tkdestroy(tttxt)
-    datafile <- tclvalue(tkgetOpenFile(filetypes='{"CSV Files" {".csv" ".CSV"}} {"All Files" {"*"}}'))
-    if(!nchar(datafile))
-       tkmessageBox(message="No file was chosen.", icon="error")
-    else
-       tkmessageBox(message=paste("The file chosen was", datafile, "and has been stored in the object named datos."), icon="info")
-     mVal <- as.character(tclvalue(headerValue))
-     if(mVal =="1")
-        headerarg <- TRUE
-     if(mVal =="0")
-        headerarg <- FALSE
-
-     datos <<- read.csv(datafile, header=headerarg,
-                   sep=" ", dec=tclvalue(decValue), na.strings="NA")
-
-     variaux <- datos[,as.numeric(tclvalue(datacolumn))]; # rm(datos)
-     vari    <- as.numeric(as.matrix(variaux))
-
-     aux1 <- sort(c(which(vari>0), which(vari<0)))
-     aux2 <- c(1:(length(aux1)-1))
-     for(i in 2:length(aux1))
-       aux2[i] <- aux1[i]-aux1[i-1]
-     if(length(which(aux2 > 1)) == 0)
-       N <- aux1[length(aux1)]
-     if(length(which(aux2 > 1)) > 0){
-       if(length(which(aux2 == 8)) == 0)
-         N <- length(vari)
-       if(length(which(aux2 == 8)) > 0)
-         N <- which(aux2 == 8)[1] - 1
-                                    }
-     vari <<- vari[1:N]
-
-     msg <- paste("Don't forget describe the series (Menu-Data->Description)", sep="")
-     tkmessageBox(title="Series info", message=msg, icon="info")
+     #msg <- paste("Don't forget describe the series (Menu-Data->Description)", sep="")
+     #tkmessageBox(title="Series info", message=msg, icon="info")
+     GetDataInfo()
    }
    OK.but <- tkbutton(tttxt, text="OK", command=OnOK)
    tkgrid(OK.but)
@@ -3890,7 +3831,20 @@ MakeSeasboxplot <- function()
 }
 
 #
+Makemonthplot <- function(type)
+{
+  string <- tclvalue(tkcmd(.treeWidget, "selection", "get"))
+  .wvari <<- ExeString(c(string, ""))
 
+  if(type == "orig"){
+    monthplot(.wvari$vari, las=1, ylab="")
+  }
+  if(type == "fdiff"){
+    monthplot(diff(.wvari$vari, lag=1), las=1, ylab="")
+  }
+}
+
+#
 Makefreqg <- function()
 {
   string <- tclvalue(tkcmd(.treeWidget, "selection", "get"))
@@ -4427,10 +4381,9 @@ dataIKERBIDE <- function()
 
   Descrbut <- function()
   {
-     mytkpager(file.path(R.home(), "library/uroot/data/source_capv"),
+     #mytkpager(file.path(R.home(), "library/uroot/data/source_capv"),
+     mytkpager(system.file("data", "source_capv", package="uroot"),
        title="CAPV Data Bank", header="", delete.file=FALSE, wwidth=70, wheight=20, export=FALSE)
-    # browseURL(file.path(R.home(), "library/urootcook/data/source_capv.html"),
-               # browser=getOption("browser"))
   }
   Descr.but <- tkbutton(ttbd, text="Source", command=Descrbut)
   OnOK <- function()
@@ -4466,7 +4419,8 @@ dataIKERBIDE <- function()
      if(tclvalue(serieValue)==16){
         s<-12; t0<- c(1982,1); logvari <- FALSE}
 
-     datos <- read.csv(file.path(R.home(), "library/uroot/data/dataIKERBIDE.csv"),
+     #datos <- read.csv(file.path(R.home(), "library/uroot/data/dataIKERBIDE.csv"),
+     datos <- read.csv(system.file("data", "dataIKERBIDE.csv", package="uroot"),
                        header=TRUE, sep=" ", dec=",", na.strings="NA")
      vari <- datos[,as.numeric(tclvalue(serieValue))]
      aux1 <- sort(c(which(vari>=0), which(vari<0)))
@@ -4555,10 +4509,9 @@ dataINE <- function()
 
   Descrbut <- function()
   {
-    mytkpager(file.path(R.home(), "library/uroot/data/source_es"),
+    #mytkpager(file.path(R.home(), "library/uroot/data/source_es"),
+    mytkpager(system.file("data", "source_es", package="uroot"),
        title="INE Data Bank", header="", delete.file=FALSE, wwidth=60, wheight=10, export=FALSE)
-    #browseURL(file.path(R.home(), "library/urootcook/data/source_es.html"),
-      #browser=getOption("browser"))
   }
   Descr.but <- tkbutton(ttbd, text="Source", command=Descrbut)
   OnOK <- function()
@@ -4590,7 +4543,8 @@ dataINE <- function()
      if(tclvalue(serieValue)==14){
         s<-4; t0<- c(1987,2); logvari <- FALSE}
 
-     datos <- read.csv(file.path(R.home(), "library/uroot/data/dataINE.csv"),
+     #datos <- read.csv(file.path(R.home(), "library/uroot/data/dataINE.csv"),
+     datos <- read.csv(system.file("data", "dataINE.csv", package="uroot"),
                        header=TRUE, sep=" ", dec=",", na.strings="NA")
      vari <- datos[,as.numeric(tclvalue(serieValue))]
 
@@ -4668,12 +4622,12 @@ dataFranses <- function()
   tkconfigure(swdipc, variable=serieValue, value="17")
 
   tkgrid(tklabel(ttbd, text="Select a series:", fg="blue"))
-  tkgrid(tklabel(ttbd, text="  Total Industrial Production Index for the United States"), usaipi,
-         sticky="w")
+  tkgrid(tklabel(ttbd, text="  Total Industrial Production Index for the United States"), usaipi, sticky="w")
   tkgrid(tklabel(ttbd, text="  Unemployment in Canada"), canun, sticky="w")
   tkgrid(tklabel(ttbd, text="  Real GNP in Germany"), gergnp, sticky="w")
   tkgrid(tklabel(ttbd, text="  Real Total Investment in the United Kindom"), ukinvest, sticky="w")
-  tkgrid(tklabel(ttbd, text="  Total Industrial Production Index for the United States (seasonally adjusted)"), usaipisa, sticky="w")
+  tkgrid(tklabel(ttbd, text="  Total Industrial Production Index for the United States (seasonally adjusted)"),
+           usaipisa, sticky="w")
   tkgrid(tklabel(ttbd, text="  Unemployment in Canada (seasonally adjusted)"), canunsa, sticky="w")
   tkgrid(tklabel(ttbd, text="  Real GNP in Germany (seasonally adjusted)"), gergnpsa, sticky="w")
   tkgrid(tklabel(ttbd, text="  United Kingdom gross domestic product"), ukgdp, sticky="w")
@@ -4683,16 +4637,16 @@ dataFranses <- function()
   tkgrid(tklabel(ttbd, text="  United Kindom imports of goods and services"), ukimp, sticky="w")
   tkgrid(tklabel(ttbd, text="  United Kindom public investment"), ukpinvest, sticky="w")
   tkgrid(tklabel(ttbd, text="  United Kindom workforce"), ukwf, sticky="w")
-  tkgrid(tklabel(ttbd, text="  Real per capita non-durables consumption in Sweden (measured in logs)"), swndcpc, sticky="w")
+  tkgrid(tklabel(ttbd, text="  Real per capita non-durables consumption in Sweden (measured in logs)"),
+           swndcpc, sticky="w")
   tkgrid(tklabel(ttbd, text="  Real per capita disposable income in Sweden (measured in logs)"),
-         swdipc, sticky="w")
+           swdipc, sticky="w")
 
   Descrbut <- function()
   {
-    mytkpager(file.path(R.home(), "library/uroot/data/source_franses"),
+    #mytkpager(file.path(R.home(), "library/uroot/data/source_franses"),
+    mytkpager(system.file("data", "source_franses", package="uroot"),
        title="Franses Data Bank", header="", delete.file=FALSE, wwidth=95, wheight=40, export=FALSE)
-    #browseURL(file.path(R.home(), "library/urootcook/data/source_franses.html"),
-               #browser=getOption("browser"))
   }
   Descr.but <- tkbutton(ttbd, text="Source", command=Descrbut)
   OnOK <- function()
@@ -4730,7 +4684,8 @@ dataFranses <- function()
      if(tclvalue(serieValue)==17){
         s<-4; t0<- c(1963,1)}
 
-     datos <- read.csv(file.path(R.home(), "library/uroot/data/dataFranses.csv"),
+     #datos <- read.csv(file.path(R.home(), "library/uroot/data/dataFranses.csv"),
+     datos <- read.csv(system.file("data", "dataFranses.csv", package="uroot"),
                        header=TRUE, sep=" ", dec=",", na.strings="NA")
      vari <- datos[,as.numeric(tclvalue(serieValue))]
 
@@ -6085,13 +6040,13 @@ urootgui <- function()
   tclRequire("BWidget")
 #
   .tt <<- tktoplevel()
-  tkwm.title(.tt, "uroot R-GUI 1.2")
+  tkwm.title(.tt, "uroot R-GUI 1.3")
 
-  xScr        <- tkscrollbar(.tt, command=function(...)tkxview(treeWidget,...),
-                            orient="horizontal")
-  yScr        <- tkscrollbar(.tt, command=function(...)tkyview(treeWidget,...))
   .treeWidget <<- tkwidget(.tt, "Tree", xscrollcommand=function(...)tkset(xScr,...),
            yscrollcommand=function(...)tkset(yScr,...), width=45, height=17, bg="aquamarine3")
+  xScr        <- tkscrollbar(.tt, command=function(...)tkxview(.treeWidget,...),
+                            orient="horizontal")
+  yScr        <- tkscrollbar(.tt, command=function(...)tkyview(.treeWidget,...))
   tkgrid(.treeWidget, yScr)
   tkgrid.configure(yScr, stick="nsw")
   tkgrid(xScr)
@@ -6102,8 +6057,8 @@ urootgui <- function()
   editPopupMenu <- tkmenu(.tt, tearoff=FALSE)
   # tkadd(editPopupMenu, "command", label="Export graphic", command=ExportGraph)
   tkadd(editPopupMenu, "command", label="Info", command=function() variinfo_treeW())
-  tkadd( editPopupMenu, "command", label="Delete", command=function()
-         tkdelete(.treeWidget, tclvalue(tkcmd(.treeWidget,"selection","get"))) )
+  tkadd(editPopupMenu, "command", label="Delete", command=function()
+         tkdelete(.treeWidget, tclvalue(tkcmd(.treeWidget,"selection","get"))))
   RightClick <- function(x,y) # x e y son las coordenadas del ratón
   {
     rootx <- as.integer(tkwinfo("rootx", .tt))
@@ -6114,9 +6069,8 @@ urootgui <- function()
   }
   tkbind(.tt, "<Button-3>", RightClick)
 
-#
-topMenu <- tkmenu(.tt)
-tkconfigure(.tt, menu=topMenu)
+  topMenu <- tkmenu(.tt)
+  tkconfigure(.tt, menu=topMenu)
 
 # ARCHIVO
 
@@ -6143,14 +6097,12 @@ BDatosMenu    <- tkmenu(topMenu, tearoff=FALSE)
 TransfMenu    <- tkmenu(topMenu, tearoff=FALSE)
 PMtrMenu      <- tkmenu(topMenu, tearoff=FALSE)
 
-tkadd(ImportMenu, "command", label="from text file",
-      command=function() ReadDataTXT())
 tkadd(ImportMenu, "command", label="from CSV file",
       command=function() ReadDataCSV())
 # tkadd(ImportMenu, "command", label="from SPSS",
 #      command=function() ReadSPSS())
 tkadd(DataMenu, "cascade", label="Import data", menu=ImportMenu)
-tkadd(DataMenu, "command", label="Description", command=function() GetDataInfo())
+#tkadd(DataMenu, "command", label="Description", command=function() GetDataInfo())
 
 tkadd(BDatosMenu, "command", label="CAPV data bank", command=function() dataIKERBIDE())
 tkadd(BDatosMenu, "command", label="INE data bank", command=function() dataINE())
@@ -6275,6 +6227,7 @@ GrafMenu      <- tkmenu(topMenu, tearoff=FALSE)
 TransGrafMenu <- tkmenu(topMenu, tearoff=FALSE)
 SpecMenu      <- tkmenu(topMenu, tearoff=FALSE)
 BBGrafMenu    <- tkmenu(topMenu, tearoff=FALSE)
+MonthplotMenu <- tkmenu(topMenu, tearoff=FALSE)
 QuartergMenu  <- tkmenu(topMenu, tearoff=FALSE)
 BBmpMenu      <- tkmenu(topMenu, tearoff=FALSE)
 
@@ -6329,8 +6282,11 @@ tkadd(BBGrafMenu, "command", label="Contour",
 tkadd(GrafMenu, "cascade", label="Buys-Ballot",
       menu=BBGrafMenu)
 
-tkadd(GrafMenu, "command", label="Seasonal box plot",
-      command=function() MakeSeasboxplot())
+tkadd(MonthplotMenu, "command", label="of the original series", command=function() Makemonthplot("orig"))
+tkadd(MonthplotMenu, "command", label="of the first differences", command=function() Makemonthplot("fdiff"))
+tkadd(GrafMenu, "cascade", label="Seasonal series", menu=MonthplotMenu)
+
+tkadd(GrafMenu, "command", label="Seasonal box plot", command=function() MakeSeasboxplot())
 
 tkadd(GrafMenu, "command", label="Filter frequencies", command=function() MakeFiltrarfrec())
 
@@ -6404,13 +6360,12 @@ tkadd(topMenu, "cascade", label="Utilities", menu=UtilMenu)
 AyudaMenu <- tkmenu(topMenu, tearoff=FALSE)
 
 tkadd(AyudaMenu, "command", label="About uroot", command=function()
-     mytkpager(file.path(R.home(), "library/uroot/DESCRIPTION"), title="About uroot",
+     mytkpager(system.file("DESCRIPTION", package="uroot"), title="About uroot",
                header="", delete.file=FALSE, wwidth=90, wheight=30, export=FALSE))
 #browseURL(file.path(R.home(), "library/urootcook/html/about.html"), browser=getOption("browser")))
 
 tkadd(AyudaMenu, "command", label="Html help", command=function()
-      browseURL(file.path(R.home(), "library/uroot/html/00Index.html"),
-                browser=getOption("browser")))
+      browseURL(system.file("html", "00Index.html", package="uroot"), browser=getOption("browser")))
 
 #tkadd(AyudaMenu, "command", label="Maintainer homepage", command=function()
 #      browseURL("http://www.bl.ehu.es/~jedlobej", browser=getOption("browser")))

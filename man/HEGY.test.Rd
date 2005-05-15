@@ -26,7 +26,8 @@
       \code{Mvfic} and \code{VFEp} are two kinds of dummies. The first one is a generic dummy and any 0-1 column-matrix can be designed for it. The second one includes seasonal dummies for only some, not necessarily all of the seasons.
 
       Available lag selection methods are the following: \code{aiclb} is based on the AIC criterion
-and Ljung-Box test, \code{biclb} is based on the BIC criterion and Ljung-Box test, \code{aiclut} follows a top-down strategy based on the AIC criterion, \code{biclut} follows a top-down strategy based on the BIC criterion, \code{signf} retains the significant lags. It is also possible to set the argument \code{selecP} equals to a vector, for instance, \code{SelecP=c(1,3,4)} for those lags to be included in the auxiliar regression.   }
+and Ljung-Box test, \code{biclb} is based on the BIC criterion and Ljung-Box test, \code{aiclut} follows a top-down strategy based on the AIC criterion, \code{biclut} follows a top-down strategy based on the BIC criterion, \code{signf} retains the significant lags.
+     It is also possible to set the argument \code{selecP} equals to a vector, for instance, \code{SelecP=c(1,3,4)} for those lags to be included in the auxiliar regression. If this option is used from the GUI menu, only four lag orders can be introduced, one in each cell. }
 
    \value{HEGY t-statistics and F-statistics for unit root hypothesis, coefficient and t-statistics of the deterministic components, number of available observations.
    }
