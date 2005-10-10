@@ -1,51 +1,80 @@
 \name{ADF.test}
  \alias{ADF.test}
-  \title{Augmented Dickey-Fuller test}
+  \title{Augmented Dickey-Fuller Test}
 
   \description{
-     This function computes the augmented Dickey-Fuller statistic for testing the null hypothesis that exists a unit root at the zero frequency.
-   }
+    This function computes the augmented Dickey-Fuller statistic for testing the null hypothesis that the
+    long run unit root 1 exists.
+  }
 
-   \usage{
-     ADF.test (label, compdet, selecP, Mvfic, VFEp, showcat)
-   }
+  \usage{
+    ADF.test (wts, itsd, regvar=0, selectlags=list(mode="signf", Pmax=NULL))
+  }
 
-   \arguments{
-       \item{label}{a list object with information about the series. The list consists of the following elements. \code{vari}, a ts object with the data of the series, \code{s}, the periodicity of the series (4, 12, or 1 for quarterly, monthly, or anual data), \code{t0}, a vector of two elements indicating the year and season of the first observation, \code{N}, number of observations.}
-       \item{compdet}{a vector indicating the deterministic components included in the auxiliar regression.}
-       \item{selecP}{method for selecting lags included in the auxiliar regression.}
-       \item{Mvfic}{a matrix containing any particular dummy.}
-       \item{VFEp}{a matrix containing partial seasonal dummies.}
-       \item{showcat}{how the results are showed and stored. If TRUE a brief explanation reports the results. If FALSE a list object stores the results.}
-   }
+  \arguments{
+    \item{wts}{a univariate time series object.}
+    \item{itsd}{deterministic components to include in the model. Three types of regressors can be
+      included: regular deterministic components, seasonal deterministic components, and any regressor
+      variable previously defined by the user.
 
-   \details{
-      \code{compdet} is a numeric vector of length three. If an element is equal to 1 it indicates that a constant, linear trend, or seasonal dummies, respectively are included. Otherwise, the element must be set to zero.
+      This argument must be a vector object with the following elements: \code{c(0,0,c(0))},
+      if the first and/or second elements are set equal to 1, it indicates that an intercept, and/or linear
+      trend, respectively, are included. The third element is a vector indicating which seasonal
+      dummies should be included. If no seasonal dummies are desired it must be set equal to zero. For
+      example, \code{regular=c(1,0,c(1,2,3))} would include an intercept, no trend, and the first three
+      seasonal dummies.}
+    \item{regvar}{regressor variables. If none regressor variables are considered, this object must be set
+      equal to zero, otherwise, the names of a matrix object previously defined should be indicated.}
+    \item{selectlags}{lag selection method. A list object indicating the method to select lags, \code{mode},
+      and the maximum lag considered. Available methods are \code{"aic"}, \code{"bic"}, and \code{"signf"}.
+      See details. \code{Pmax} is a numeric object indicating the maximum lag order. By default, the maximum
+      number of lags considered is \eqn{round(10*log10(n))}, where \eqn{n} is the number of observations.}
+  }
 
-      \code{Mvfic} and \code{VFEp} are two kinds of dummies. The first one is a generic dummy and any 0-1 column-matrix can be designed for it. The second one includes seasonal dummies for only some, not necessarily all of the seasons.
+  \details{
+    The auxiliar regression is defined as,
 
-      Available lag selection methods are the following: \code{aiclb} is based on the AIC criterion
-and Ljung-Box test, \code{biclb} is based on the BIC criterion and Ljung-Box test, \code{aiclut} follows a top-down strategy based on the AIC criterion, \code{biclut} follows a top-down strategy based on the BIC criterion, \code{signf} retains the significant lags. It is also possible to set the argument \code{selecP} equals to a vector, for instance, \code{SelecP=c(1,3,4)} for those lags to be included in the auxiliar regression.
-   }
+    \eqn{\delta y_t = \rho y_{t-1} + \epsilon_t,}
 
-   \value{ADF test statistic for long run unit root hypothesis, coefficient and t-statistics of the deterministic components, and number of available observations.
-   }
+    where \eqn{\delta} is the first order operator. Hence, under the null hypothesis \eqn{\rho=0} and the
+    long run unit root 1 exists.
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
+    Available methods are the following. \code{"aic"} and \code{"bic"} follows a top-down strategy based on
+    the Akaike's and Schwarz's information criteria, and \code{"signf"} removes the non-significant lags at
+    the 10\% level of significance until all the selected lags are significant. By default, the maximum
+    number of lags considered is \eqn{round(10*log10(n))}, where \eqn{n} is the number of observations.
 
-   \references{
-   D.A. Dickey and W.A. Fuller (1981), Likelihood ratio statistics for autoregressive time series with a unit root. \emph{Econometrica}, \bold{49}, 1057-1071.
+    It is also possible to set the argument \code{selectlags} equals to a vector, \code{mode=c(1,3,4)}, then
+    those lags are directly included in the auxiliar regression and \code{Pmax} is ignored.
+  }
 
-   W.A. Fuller (1976), Introduction to Statistical Time Series. Jonh Wiley, New York.
-   }
+  \value{An object of class \code{\link{adfstat-class}}.}
 
-   \examples{
+  \seealso{\code{\link{ADF.rectest}}.}
 
-     ## ADF.test with constant and seasonal dummies and without other dummies.
-     data(AirPassengers)
-     AirP <- list(vari=AirPassengers, s=12, t0=c(1949,1), N=length(AirPassengers))
-     ADF.test(label=AirP, compdet=c(1,0,1), selecP="biclb", Mvfic=0, VFEp=0, showcat=TRUE)
-   }
-   \keyword{ts}
+  \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza
+    \email{Ignacio.Diaz-Emparanza@ehu.es}
+  }
+
+  \references{
+    D.A. Dickey and W.A. Fuller (1981), Likelihood ratio statistics for autoregressive time series with a
+    unit root. \emph{Econometrica}, \bold{49}, 1057-1071.
+
+    W.A. Fuller (1976), Introduction to Statistical Time Series. Jonh Wiley, New York.
+  }
+
+  \examples{
+    ## ADF test with constant, trend and seasonal dummies.
+    data(AirPassengers)
+    lairp <- log(AirPassengers)
+    adf.out1 <- ADF.test(wts=lairp, itsd=c(1,1,c(1:11)),
+                  regvar=0, selectlags=list(mode="bic", Pmax=12))
+    adf.out1
+    adf.out2 <- ADF.test(wts=lairp, itsd=c(1,1,c(1:11)),
+                  regvar=0, selectlags=list(mode="signf", Pmax=NULL))
+    adf.out2
+  }
+
+\keyword{ts}
 
 

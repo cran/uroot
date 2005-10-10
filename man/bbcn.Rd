@@ -1,39 +1,34 @@
 \name{bbcn}
  \alias{bbcn}
-  \title{Buys-Ballot contour}
+  \title{Buys-Ballot Contour Plot}
 
   \description{
-     This function creates a grid of rectangles with colors corresponding to the values in
-\code{MR} and add contour lines to the existing plot.
-   }
+    This function creates a grid of rectangles with colors corresponding to seasonal data and adds contour
+    lines to the existing plot.
+  }
 
-   \usage{
-      bbcn (MR, s, t0, color)
-   }
+  \usage{
+    bbcn (wts, color=TRUE)
+  }
 
-   \arguments{
-      \item{MR}{a matrix containing the values to be plotted (NAs are allowed).}
-      \item{s}{periodicity of the series}
-      \item{t0}{year and season of the first observation.}
-      \item{color}{logical. If TRUE a coloured graphic is showed. Otherwise, grey scale.}
-   }
+  \arguments{
+    \item{wts}{a univariate time series object.}
+    \item{color}{logical. If TRUE a coloured graphic is showed. Otherwise, grey scale.}
+  }
 
-   \details{
-       \code{MR} is a matrix with the data of the series defined as the matrix provided by
-\code{\link{quarterg}} in quarterly series and \code{\link{bbmp}} in monthly series.
-   }
+  \seealso{
+    \code{\link{bbaplot}}, \code{\link{bbaplot}}, \code{\link{bbcn}},
+    \code{\link{image}}, and \code{\link{persp}}.
+  }
 
-   \seealso{
-     \code{\link{bb3D}}, \code{\link{bbmp}}, \code{\link{contour}}, \code{\link{image}}, and \code{\link{persp}}, \code{\link{quarterg}}.
-   }
+  \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza
+    \email{Ignacio.Diaz-Emparanza@ehu.es}
+  }
 
-   \value{ Perspective graphic of surface over the month-year plane. }
+  \examples{
+    ## Buys-Ballot contour plot.
+    data(AirPassengers)
+    bbcn(wts=log(AirPassengers))
+  }
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
-
-   \examples{
-      data(AirPassengers)
-      MR <- bbmp (vari=AirPassengers, t0=c(1949,1), mp=c(1:12), vers="Prot", plot=FALSE)
-      bbcn (MR, s=12, t0=c(1949,1), color=TRUE)
-   }
-   \keyword{hplot}
+\keyword{misc}

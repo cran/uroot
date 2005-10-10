@@ -1,54 +1,85 @@
 \name{HEGY.test}
  \alias{HEGY.test}
-  \title{Hylleberg-Engle-Granger-Yoo test}
+  \title{Hylleberg-Engle-Granger-Yoo Test}
 
   \description{
-     This function computes the Hylleberg-Engle-Granger-Yoo statistic for testing the null hypothesis that exits a unit root at long run or seasonal frequencies.
-   }
+    This function computes the Hylleberg-Engle-Granger-Yoo statistics for testing the null hypothesis that
+    long run and/or seasonal unit roots exists.
+  }
 
-   \usage{
-     HEGY.test (label, compdet, selecP, Mvfic, VFEp, showcat)
-   }
+  \usage{
+    HEGY.test (wts, itsd, regvar=0, selectlags=list(mode="signf", Pmax=NULL))
+  }
 
-   \arguments{
-       \item{label}{a list object with information about the series. The list consist of the following elements. \code{vari}, a ts object with the data of the series, \code{s}, the periodicity of the series (4, 12, or 1 for quarterly, monthly, or anual data), \code{t0}, a vector of two elements indicating the year and season of the first observation, \code{N}, number of observations.}
-       \item{compdet}{a vector indicating the deterministic components included in the auxiliar regression.}
-       \item{selecP}{method for selecting lags included in the auxiliar regression.}
-       \item{Mvfic}{a matrix containing any particular dummy.}
-       \item{VFEp}{a matrix containing partial seasonal dummies.}
-       \item{showcat}{how the results are showed and stored. If TRUE a brief explanation reports
-                      the results. If FALSE a list object stores the results.}
-   }
+  \arguments{
+    \item{wts}{a univariate time series object.}
+    \item{itsd}{deterministic components to include in the model. Three types of regressors can be
+      included: regular deterministic components, seasonal deterministic components, and any regressor
+      variable previously defined by the user.
 
-   \details{
-      \code{compdet} is a numeric vector of length three. If an element is equal to 1 it indicates that a constant, linear trend or seasonal dummies respectively are included. Otherwise, the element must be set to zero.
+      This argument must be a vector object with the following elements: \code{c(0,0,c(0))},
+      if the first and/or second elements are set equal to 1, it indicates that an intercept, and/or linear
+      trend, respectively, are included. The third element is a vector indicating which seasonal
+      dummies should be included. If no seasonal dummies are desired it must be set equal to zero. For
+      example, \code{regular=c(1,0,c(1,2,3))} would include an intercept, no trend, and the first three
+      seasonal dummies.}
+    \item{regvar}{regressor variables. If none regressor variables are considered, this object must be set
+      equal to zero, otherwise, the names of a matrix object previously defined should be indicated.}
+    \item{selectlags}{lag selection method. A list object indicating the method to select lags, \code{mode},
+      and the maximum lag considered. Available methods are \code{"aic"}, \code{"bic"}, and \code{"signf"}.
+      See details. \code{Pmax} is a numeric object indicating the maximum lag order. By default, the maximum
+      number of lags considered is \eqn{round(10*log10(n))}, where \eqn{n} is the number of observations.}
+  }
 
-      \code{Mvfic} and \code{VFEp} are two kinds of dummies. The first one is a generic dummy and any 0-1 column-matrix can be designed for it. The second one includes seasonal dummies for only some, not necessarily all of the seasons.
+  \details{
+    Available methods are the following. \code{"aic"} and \code{"bic"} follows a top-down strategy based on
+    the Akaike's and Schwarz's information criteria, and \code{"signf"} removes the non-significant lags at
+    the 10\% level of significance until all the selected lags are significant. By default, the maximum
+    number of lags considered is \eqn{round(10*log10(n))}, where \eqn{n} is the number of observations.
 
-      Available lag selection methods are the following: \code{aiclb} is based on the AIC criterion
-and Ljung-Box test, \code{biclb} is based on the BIC criterion and Ljung-Box test, \code{aiclut} follows a top-down strategy based on the AIC criterion, \code{biclut} follows a top-down strategy based on the BIC criterion, \code{signf} retains the significant lags.
-     It is also possible to set the argument \code{selecP} equals to a vector, for instance, \code{SelecP=c(1,3,4)} for those lags to be included in the auxiliar regression. If this option is used from the GUI menu, only four lag orders can be introduced, one in each cell. }
+    It is also possible to set the argument \code{selectlags} equals to a vector, \code{mode=c(1,3,4)}, then
+    those lags are directly included in the auxiliar regression and \code{Pmax} is ignored.
 
-   \value{HEGY t-statistics and F-statistics for unit root hypothesis, coefficient and t-statistics of the deterministic components, number of available observations.
-   }
+    The statistics \eqn{t_1}, and \eqn{t_2}, test for a unit root at cycles of frequencies zero, and
+    \eqn{\pi}, respectively; \eqn{t_3}, and \eqn{t_4} are related to cycles of frequency \eqn{\pi/2};
+    \eqn{t_5} and \eqn{t_6} to cycles of frequency \eqn{2\pi/3}, \eqn{t_7} and \eqn{t_8} to cycles of
+    frequency \eqn{\pi/3}; \eqn{t_9} and \eqn{t_10} to cycles of frequency \eqn{5\pi/6}; \eqn{t_11} and
+    \eqn{t_12} to cycles of frequency \eqn{\pi/6}, and the corresponding alias frequencies in each case.
+    Similar notation is used with the \eqn{F-}statistics, in this way, \eqn{F_3:4} tests for a unit root at
+    cycles of frequenciency \eqn{\pi/2}, and so on.
+  }
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
+  \value{An object of class \code{\link{hegystat-class}}.}
 
-   \references{S. Hylleberg, R. Engle, C. Granger and B. Yoo (1990),
-Seasonal integration and cointegration. \emph{Journal of Econometrics}, \bold{44}, 215-238.
+  \seealso{\code{\link{HEGY.rectest}}.}
 
-J. Beaulieu and J. Miron (1993), Seasonal unit roots in aggregate U.S. data.
-\emph{Journal of Econometrics}, \bold{54}, 305-328.
+  \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza
+    \email{Ignacio.Diaz-Emparanza@ehu.es}
+  }
 
-P.H. Franses (1990), Testing for seasonal unit roots in monthly data, Technical Report 9032, Econometric Institute.
-   }
+  \references{
+    S. Hylleberg, R. Engle, C. Granger and B. Yoo (1990), Seasonal integration and cointegration.
+    \emph{Journal of Econometrics}, \bold{44}, 215-238.
 
-   \examples{
-     ## HEGY test with constant and seasonal dummies and without other dummies.
-     data(AirPassengers)
-     AirP <- list(vari=AirPassengers, s=12, t0=c(1949, 1), N=length(AirPassengers))
-     HEGY.test(label=AirP, compdet=c(1,0,1), selecP="biclb", Mvfic=0, VFEp=0, showcat=TRUE)
-   }
-   \keyword{ts}
+    J. Beaulieu and J. Miron (1993), Seasonal unit roots in aggregate U.S. data.
+    \emph{Journal of Econometrics}, \bold{54}, 305-328.
+
+    P.H. Franses (1990), Testing for seasonal unit roots in monthly data, Technical Report 9032, Econometric
+    Institute.
+  }
+
+  \examples{
+    ## HEGY test with constant, trend and seasonal dummies.
+    data(AirPassengers)
+    lairp <- log(AirPassengers)
+    hegy.out1 <- HEGY.test(wts=lairp, itsd=c(1,1,c(1:11)),
+                   regvar=0, selectlags=list(mode="bic", Pmax=12))
+    hegy.out1
+    hegy.out2 <- HEGY.test(wts=lairp, itsd=c(1,1,c(1:11)),
+                   regvar=0, selectlags=list(mode="signf", Pmax=NULL))
+    hegy.out2
+  }
+
+\keyword{ts}
 
 

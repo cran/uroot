@@ -1,39 +1,53 @@
 \name{KPSS.test}
  \alias{KPSS.test}
-  \title{Kwiatkowski-Phillips-Schmidt-Shin test}
+  \title{Kwiatkowski-Phillips-Schmidt-Shin Test}
 
   \description{
-     This function computes the Kwiatkowski-Phillips-Schmidt-Shin test statistic for examining the null hypothesis
-that a given series is level-stationary or stationary around a deterministic trend against the alternative that the series is first difference stationary.
+    This function computes the Kwiatkowski-Phillips-Schmidt-Shin test statistic for examining the null
+    hypothesis that a given series is level-stationary, or stationary around a deterministic trend against the
+    alternative that the series is first difference stationary.
    }
+
    \usage{
-      KPSS.test (vari, l, showcat)
+     KPSS.test (wts, ltrunc)
    }
 
-   \arguments{
-       \item{vari}{a ts object.}
-       \item{l}{lag truncation parameter.}
-       \item{showcat}{how the results are showed and stored. If TRUE a brief explanation reports the results. If FALSE a list object stores the results.
-}
-   }
+  \arguments{
+    \item{wts}{a univariate time series object.}
+    \item{ltrunc}{lag truncation parameter. By default, \eqn{3*sqrt(length(wts))/13}}
+  }
 
-   \details{
-     Lag truncation parameter indicates the number of autocovariances considered different from zero for estimating the variance of the residuals. According to the source paper cited below, the lag truncation parameter may be chosen either as \eqn{integer[4(T/100)^{1/4}]} or \eqn{integer[12(T/100)^{1/4}]}, as well as \code{l} =0.
+  \details{
+    Lag truncation parameter indicates the number of autocovariances considered different from zero for
+    estimating the variance of the residuals. According to the source paper cited below, the lag truncation
+    parameter may be chosen either as \eqn{integer[4(T/100)^{1/4}]} or \eqn{integer[12(T/100)^{1/4}]}, as
+    well as \code{l} =0.
 
-     Rejection of the null hypothesis implies that the long term frequency contains a unit root.
-   }
+    Rejection of the null hypothesis implies that the long term frequency contains a unit root.
+  }
 
-   \value{Statistic for the level stationary null hypothesis, and statistic for the trend stationary null hypothesis.
-   }
+  \value{An object of class \code{\link{kpssstat-class}}.}
 
-   \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza \email{etpdihei@bs.ehu.es}}
+  \seealso{\code{\link{KPSS.rectest}}.}
 
-   \references{
-      D. Kwiatkowski, P.C.B. Phillips, P. Schmidt and Y. Shin (1992), Testing the null hypothesis of stationarity against the alternative of a unit root: How sure are we that economic time series have a unit root? \emph{Journal of Econometrics}, \bold{54}, 159-178.
-   }
+  \author{Javier López-de-Lacalle \email{javlacalle@yahoo.es} and Ignacio Díaz-Emparanza
+    \email{Ignacio.Diaz-Emparanza@ehu.es}.}
 
-   \examples{
-     data(AirPassengers)
-     KPSS.test(AirPassengers, l=4, showcat=TRUE)
-   }
-   \keyword{ts}
+  \references{
+    D. Kwiatkowski, P.C.B. Phillips, P. Schmidt and Y. Shin (1992), Testing the null hypothesis of
+    stationarity against the alternative of a unit root: How sure are we that economic time series have a
+    unit root? \emph{Journal of Econometrics}, \bold{54}, 159-178.
+  }
+
+  \examples{
+    ## KPSS test
+    data(AirPassengers)
+    kpss.out1 <- KPSS.test(wts=AirPassengers, ltrunc=1)
+    kpss.out1
+    kpss.out2 <- KPSS.test(wts=AirPassengers, ltrunc=2)
+    kpss.out2
+    kpss.out3 <- KPSS.test(wts=AirPassengers, ltrunc=4)
+    kpss.out3
+  }
+
+\keyword{ts}
