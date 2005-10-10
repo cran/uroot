@@ -1,10 +1,10 @@
 Package: uroot
-Version: 1.4
+Version: 1.4-1
 Date: 2005/10/10
 Title: Unit Root Tests and Graphics for Seasonal Time Series
 Author: Javier López-de-Lacalle <javlacalle@yahoo.es> and
         Ignacio Díaz-Emparanza <Ignacio.Diaz-Emparanza@ehu.es>
-Maintainer: Javier López-de-Lacalle <javlacalle@yahoo.es>
+Maintainer: ORPHANED
 Depends: R (>= 2.0.0), methods
 Imports: graphics
 Suggests: tcltk, xtable
@@ -18,4 +18,4 @@ Description: This package contains several functions for analysing quarterly and
       provided to run some of the implemented functions.
 License: GPL version 2 or newer. The terms of this license are in a file called COPYING which is
       provided with R.
-Packaged: Tue Oct 18 12:56:27 2005; root
+Packaged: 2009-06-23 07:06:42 UTC; hornik
