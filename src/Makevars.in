@@ -1,0 +1,31 @@
+CXX=@CXX@
+R_INCL=@R_INCL@
+AR=ar
+MAKE=make
+
+.SUFFIXES: .cu
+
+ifeq (@HAS_CUDA@,TRUE)
+  OBJECTS = uroot.o dev-fnc.o kernel.o
+  NVCC=@CUDA_HOME@/bin/nvcc
+  NVCCFLAGS = -O3 -G --shared -Xcompiler -fPIC $(R_INCL) -arch=sm_30 --relocatable-device-code true -I@CUDA_HOME@/include
+  NVCCLINKS = -shared -lcuda -lcublas -lcudadevrt
+  cuda_obj = dev-fnc.o kernel.o
+  #PKG_LIBS = $(cuda_obj) -L@CUDA_HOME@/lib64 -lcuda -lcublas -lcudadevrt
+else
+  OBJECTS = uroot.o
+endif
+
+.cu.o:
+	$(NVCC) $(NVCCFLAGS) -c -o $@ $<
+
+TARGET: uroot.so
+
+ifeq (@HAS_CUDA@,TRUE)
+	$(NVCC) $(NVCCFLAGS) -c dev-fnc.cu -o dev-fnc.o
+	$(NVCC) $(NVCCFLAGS) -c kernel.cu -o kernel.o
+	$(NVCC) $(cuda_obj) $(NVCCLINKS) -o uroot.so
+endif
+
+all: $(TARGET)
+$(TARGET): $(OBJECTS)

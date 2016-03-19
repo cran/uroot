@@ -1,13 +1,26 @@
 
-export(Mdates, ADF.test, ADF.rectest, KPSS.test, KPSS.rectest, HEGY.test, HEGY.rectest, CH.test,
-  CH.rectest, factorsdiff, plotcycles, Msts, bbplot, bbaplot, bb3D, bbcn,
-  recadf.save.xtable, reckpss.save.xtable, rechegy.save.xtable, recch.save.xtable,
-  urootgui)
+useDynLib(uroot)
 
-importFrom(graphics, plot)
-#importFrom(xtable, xtable)  ## xtable package does not have a namespace.
+export(
+ch.rs.pvalue,
+ch.test,
+hegy.boot.pval,
+hegy.regressors,
+hegy.rs.pvalue,
+hegy.test,
+seasonal.cycles,
+seasonal.dummies,
+uroot.raw.pvalue)
 
-exportClasses("vdate", "maybeRegvar", "maybeLags", "adfstat", "adfrecst", "kpssstat", "kpssrecst",
-  "hegystat", "hegyrecst", "chstat", "chrecst")
+S3method(print, CHtest)
+S3method(print, HEGYtest)
+S3method(residuals, HEGYtest)
+S3method(summary, CHtest)
+S3method(summary, HEGYtest)
 
-exportMethods("show", "summary", "plot", "as.numeric", "as.vdate", "stepdate", "urt.xtable", "save.xtable")
+importFrom("stats", "AIC", "BIC", "approx", "as.formula", "cycle", "coef",
+  "deviance", "df.residual", "end", "filter", "frequency", "is.ts",
+  "lag", "logLik", "lm", "lm.fit", "pchisq", "pnorm", "qchisq", "qnorm",
+  "residuals", "start", "symnum", "time", "ts", "update", "vcov", "window")
+
+importFrom("utils", "head", "tail")
