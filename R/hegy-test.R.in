@@ -302,7 +302,7 @@ hegy.test <- function(x, deterministic = c(1,0,0),
       chosen.lags <- tmp$chosen_lags
     } else {
       if (grepl("windows", .Platform$OS.type)) {
-        stop("GPU parallelization is not currently available for windows systems,\n", 
+        stop("GPU parallelization could not be test on a Windows system,\n", 
         "consider using the function ",  sQuote("hegy.boot.pval"))
       } else # unix
         stop("CUDA capable GPU was not available when installing the package on this system,\n", 

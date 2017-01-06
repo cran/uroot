@@ -1,8 +1,20 @@
 
+Version 2.0-6 2017-01-05
+-------------------------
+
+  o A cleanup script has been added.
+
+  o GNU make is no longer a SystemRequirements.
+    Include files are used in order to avoid the 'ifeq' GNU make extension,
+    this makes Makevars more portable.
+
+  o The configure script creates now appropriate environment variables 
+    when it detects that it is running on the ARINA cluster of the UPV/EHU.
+
 Version 2.0-5 2016-03-18
 -------------------------
 
-  o Based on an older version of package "uroot".
+  o Based on an older version of package uroot.
     This version provides the CH test for seasonal stability and
     the HEGY test for seasonal unit roots. The functions that implement 
     these tests have been coded from the scratch in order to include the  

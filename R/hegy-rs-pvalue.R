@@ -2,7 +2,7 @@
 # the code for function 'hegy.rs.pvalue' below has been 
 # ported from gretl code provided by Ignacio Díaz-Emparanza (2014)
 # http://www.ehu.eus/ignacio.diaz-emparanza/packages/GHegy.gfn
-# “Numerical Distribution Functions for Seasonal Unit Root Tests”, 
+# "Numerical Distribution Functions for Seasonal Unit Root Tests", 
 # Computational Statistics and Data Analysis, Volume 76, pages 237-247 
 # The Annals of Computational and Financial Econometrics - 2nd Issue
 # DOI: http://dx.doi.org/10.1016/j.csda.2013.03.006
