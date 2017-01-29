@@ -112,7 +112,7 @@ hegy.test <- function(x, deterministic = c(1,0,0),
   #in principle it is not a good idea to define the intercept in "xreg" and 
   #use lm(x ~ 0 + xreg) because stats::summary.lm uses attr(z$terms, "intercept")
   #to compute the R-squared and the F statistic includes the intercept (not the usual test),
-  #but here the R-squared and F statistic are not used
+  #but here the R-squared and the F-statistic are not used
 
   if (deterministic[2] == 1) {
     xreg <- cbind(xreg, trend = seq_along(dx))
@@ -229,7 +229,7 @@ hegy.test <- function(x, deterministic = c(1,0,0),
   ctd <- paste(deterministic, collapse = "")
 
   if (pvalue == "RS")
-  { # pvalue == "RS"
+  {
     stats[1,2] <- hegy.rs.pvalue(stats[1,1], "zero", ctd, lag.method, 
       maxlag, S, dfs2, rs.nobsreg)
     if (isSeven)
@@ -302,7 +302,7 @@ hegy.test <- function(x, deterministic = c(1,0,0),
       chosen.lags <- tmp$chosen_lags
     } else {
       if (grepl("windows", .Platform$OS.type)) {
-        stop("GPU parallelization could not be test on a Windows system,\n", 
+        stop("GPU parallelization could not be tested on a Windows system,\n", 
         "consider using the function ",  sQuote("hegy.boot.pval"))
       } else # unix
         stop("CUDA capable GPU was not available when installing the package on this system,\n", 
