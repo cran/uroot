@@ -1,4 +1,4 @@
-755909429e77a6e4e49a1c0c841138f5 *DESCRIPTION
+fdc7313d48fae0f603fafc987bef8ae9 *DESCRIPTION
 560e535f262f2d8294cb35e1f0c31b02 *NAMESPACE
 7a96df8aff48dacbf8a6cdba151b9872 *NEWS
 a94e2522a8591b60606d312f49cbd554 *R/ch-rs-pvalue.R
@@ -16,8 +16,8 @@ cd9870241cc6e81df214de4866594ca4 *README
 fdaa9350c76fa6fd34afb0f22a15a010 *build/vignette.rds
 3337f0ee03c9734b5c325b0926a3fc4e *cleanup
 c91139ec45f3a4d48a2e83d70605e89c *cleanup.win
-c8dd35f978e9e35620e84d83f51098c2 *configure
-adef448107160b0fc3ae9d8d8f2a5592 *configure.ac
+f7e368a8c4f68f487bcf69c89b4647af *configure
+77c9e20eaef87ca84c79a92fad3416ec *configure.ac
 f84c8737e6c74f8319df1b6cfcc24982 *configure.win
 945105230ce8a6a5cbed80464d7e1f45 *data/bgt-data.rda
 1ab9d1ab460958190a1b592551478fe2 *data/ch-data.rda

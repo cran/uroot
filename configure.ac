@@ -2,7 +2,7 @@
 
 AC_INIT([uroot], [2.0-9])
 AC_CONFIG_AUX_DIR([tools])
-AM_INIT_AUTOMAKE
+##AM_INIT_AUTOMAKE
 
 AC_CONFIG_MACRO_DIR([tools])
 
